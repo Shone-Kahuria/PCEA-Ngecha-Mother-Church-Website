@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Announcements{% endblock %}
+
+{% block content %}
+<section class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-0">Announcements</h1>
+    <a href="{{ url_for('admin.announcement_create') }}" class="btn btn-primary btn-sm">Add Announcement</a>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-striped align-middle">
+      <thead><tr><th>Title</th><th>Period</th><th>Status</th><th>Actions</th></tr></thead>
+      <tbody>
+        {% for item in announcements %}
+          <tr>
+            <td>{{ item.title }}</td>
+            <td>{{ item.start_date.strftime('%d %b %Y') }}{% if item.end_date %} - {{ item.end_date.strftime('%d %b %Y') }}{% endif %}</td>
+            <td>{{ "Active" if item.is_active else "Inactive" }}</td>
+            <td class="d-flex gap-2">
+              <a class="btn btn-sm btn-outline-primary" href="{{ url_for('admin.announcement_edit', announcement_id=item.id) }}">Edit</a>
+              <form method="post" action="{{ url_for('admin.announcement_delete', announcement_id=item.id) }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                <button class="btn btn-sm btn-outline-danger" type="submit">Archive</button>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

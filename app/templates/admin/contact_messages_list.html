@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Contact Messages{% endblock %}
+
+{% block content %}
+<section class="container py-4">
+  <h1 class="h3 mb-3">Contact Messages</h1>
+  <div class="table-responsive">
+    <table class="table table-striped align-middle">
+      <thead><tr><th>Name</th><th>Email</th><th>Subject</th><th>Message</th><th>Submitted</th></tr></thead>
+      <tbody>
+        {% for message in messages %}
+          <tr>
+            <td>{{ message.name }}</td>
+            <td>{{ message.email }}</td>
+            <td>{{ message.subject }}</td>
+            <td>{{ message.message[:100] }}{% if message.message|length > 100 %}...{% endif %}</td>
+            <td>{{ message.submitted_at.strftime('%d %b %Y') }}</td>
+          </tr>
+        {% else %}
+          <tr><td colspan="5">No contact messages yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

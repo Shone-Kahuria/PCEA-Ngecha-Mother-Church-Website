@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Districts | PCEA Ngecha Mother Church{% endblock %}
+
+{% block content %}
+<section class="container py-4">
+  <h1 class="mb-3">Districts</h1>
+  <div class="row g-3">
+    {% for district in districts %}
+      <div class="col-md-6 col-lg-4">
+        <div class="card h-100">
+          <div class="card-body">
+            <h2 class="h5">{{ district.name }}</h2>
+            <p class="mb-2">{{ district.description or "District profile is being updated." }}</p>
+            <p class="small text-muted">Elder: {{ district.elder.full_name if district.elder else "Not assigned" }}</p>
+            <a class="btn btn-sm btn-outline-primary" href="{{ url_for('main.district_detail', district_id=district.id) }}">View District</a>
+          </div>
+        </div>
+      </div>
+    {% else %}
+      <p>No districts available yet.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

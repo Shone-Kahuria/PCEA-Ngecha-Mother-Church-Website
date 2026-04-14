@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+
+{% block title %}Home | PCEA Ngecha Mother Church{% endblock %}
+
+{% block content %}
+<section class="hero-wrap py-5">
+  <div class="container py-4">
+    <div class="row align-items-center g-4">
+      <div class="col-lg-7">
+        <p class="text-uppercase fw-semibold mb-2">Welcome Home</p>
+        <h1 class="display-5 fw-bold mb-3">Built on Faith, Rooted in Community</h1>
+        <p class="lead mb-4">Welcome to PCEA Ngecha Mother Church. Follow sermons, upcoming events, district life, and fellowship updates from one unified platform.</p>
+        <div class="d-flex flex-wrap gap-2">
+          <a href="{{ url_for('main.sermons') }}" class="btn btn-primary px-4">Latest Sermons</a>
+          <a href="{{ url_for('main.events') }}" class="btn btn-outline-light px-4">Upcoming Events</a>
+          <a href="{{ url_for('main.prayer') }}" class="btn btn-outline-light px-4">Prayer Request</a>
+        </div>
+      </div>
+      <div class="col-lg-5">
+        <div class="stats-card">
+          <h2 class="h5 mb-3">Stay Connected</h2>
+          <form method="post" action="{{ url_for('main.subscribe_newsletter') }}" class="row g-2">
+            {{ newsletter_form.hidden_tag() }}
+            <div class="col-12">
+              {{ newsletter_form.name(class_='form-control', placeholder='Your Name (optional)') }}
+            </div>
+            <div class="col-12">
+              {{ newsletter_form.email(class_='form-control', placeholder='Your Email') }}
+            </div>
+            <div class="col-12">
+              {{ newsletter_form.submit(class_='btn btn-light w-100') }}
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="container py-4">
+  <div class="row g-4">
+    <div class="col-lg-6">
+      <div class="card h-100">
+        <div class="card-body">
+          <h2 class="h5">Latest Sermon</h2>
+          {% if latest_sermon %}
+            <h3 class="h6 mb-1">{{ latest_sermon.title }}</h3>
+            <p class="mb-1 text-muted">{{ latest_sermon.preached_on.strftime('%d %b %Y') }} by {{ latest_sermon.minister.full_name }}</p>
+            <p class="mb-3">{{ latest_sermon.scripture or 'Scripture to be updated' }}</p>
+            <a class="btn btn-sm btn-outline-primary" href="{{ url_for('main.sermon_detail', sermon_id=latest_sermon.id) }}">Read Details</a>
+          {% else %}
+            <p class="mb-0">No sermons published yet.</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="card h-100">
+        <div class="card-body">
+          <h2 class="h5">Upcoming Events</h2>
+          {% if upcoming_events %}
+            <ul class="list-group list-group-flush">
+              {% for event in upcoming_events %}
+                <li class="list-group-item px-0 d-flex justify-content-between">
+                  <span>{{ event.title }}</span>
+                  <span class="text-muted">{{ event.event_date.strftime('%d %b') }}</span>
+                </li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <p class="mb-0">No upcoming events at the moment.</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="container pb-4">
+  <div class="row g-4">
+    <div class="col-lg-7">
+      <div class="card h-100">
+        <div class="card-body">
+          <h2 class="h5">Announcements</h2>
+          {% if announcements %}
+            <ul class="mb-0">
+              {% for item in announcements %}
+                <li>{{ item.title }} ({{ item.start_date.strftime('%d %b %Y') }})</li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <p class="mb-0">No active announcements.</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-5">
+      <div class="card h-100">
+        <div class="card-body">
+          <h2 class="h5">Quick Path</h2>
+          <p>New here? Start with the About page, then explore events and districts to connect with church life.</p>
+          <div class="d-grid gap-2">
+            <a class="btn btn-outline-primary" href="{{ url_for('main.about') }}">Read About The Church</a>
+            <a class="btn btn-outline-primary" href="{{ url_for('main.districts') }}">Browse Districts</a>
+            <a class="btn btn-outline-primary" href="{{ url_for('main.groups') }}">Explore Fellowships</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

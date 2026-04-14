@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}{{ sermon.title }} | Sermon{% endblock %}
+
+{% block content %}
+<section class="container py-4">
+  <p class="text-uppercase fw-semibold text-muted mb-2">Sermon Detail</p>
+  <a href="{{ url_for('main.sermons') }}" class="btn btn-sm btn-outline-secondary mb-3">Back to Sermons</a>
+  <div class="card">
+    <div class="card-body">
+      <h1 class="h3">{{ sermon.title }}</h1>
+      <p class="text-muted">{{ sermon.preached_on.strftime('%d %b %Y') }} | {{ sermon.minister.full_name }}</p>
+      {% if sermon.scripture %}<p><strong>Scripture:</strong> {{ sermon.scripture }}</p>{% endif %}
+      {% if sermon.sermon_series %}<p><strong>Series:</strong> {{ sermon.sermon_series }}</p>{% endif %}
+      <p>{{ sermon.description or "Full sermon notes will be added by the ministry team." }}</p>
+      <div class="d-flex gap-2 flex-wrap">
+        {% if sermon.audio_url %}<a class="btn btn-primary" href="{{ sermon.audio_url }}" target="_blank" rel="noopener">Listen Audio</a>{% endif %}
+        {% if sermon.video_url %}<a class="btn btn-outline-primary" href="{{ sermon.video_url }}" target="_blank" rel="noopener">Watch Video</a>{% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

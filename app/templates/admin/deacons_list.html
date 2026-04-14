@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Deacons{% endblock %}
+
+{% block content %}
+<section class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-0">Deacons</h1>
+    <a href="{{ url_for('admin.deacon_create') }}" class="btn btn-primary btn-sm">Add Deacon</a>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-striped align-middle">
+      <thead><tr><th>Name</th><th>District</th><th>Zone</th><th>Status</th><th>Actions</th></tr></thead>
+      <tbody>
+        {% for deacon in deacons %}
+          <tr>
+            <td>{{ deacon.full_name }}</td>
+            <td>{{ deacon.district.name if deacon.district else "Unassigned" }}</td>
+            <td>{{ deacon.zone or "-" }}</td>
+            <td>{{ "Active" if deacon.is_active else "Inactive" }}</td>
+            <td class="d-flex gap-2">
+              <a class="btn btn-sm btn-outline-primary" href="{{ url_for('admin.deacon_edit', deacon_id=deacon.id) }}">Edit</a>
+              <form method="post" action="{{ url_for('admin.deacon_delete', deacon_id=deacon.id) }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                <button class="btn btn-sm btn-outline-danger" type="submit">Deactivate</button>
+              </form>
+            </td>
+          </tr>
+        {% else %}
+          <tr><td colspan="5">No deacons available yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

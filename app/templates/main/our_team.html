@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Our Team | PCEA Ngecha Mother Church{% endblock %}
+
+{% block content %}
+<section class="container py-4">
+  <h1 class="mb-3">Our Team</h1>
+
+  <div class="row g-3">
+    <div class="col-lg-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <h2 class="h5">Ministers</h2>
+          {% if ministers %}
+            <ul class="mb-0">
+              {% for minister in ministers %}
+                <li>{{ minister.full_name }} ({{ minister.title }})</li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <p class="mb-0">No ministers published yet.</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <h2 class="h5">Elders</h2>
+          {% if elders %}
+            <ul class="mb-0">
+              {% for elder in elders %}
+                <li>{{ elder.full_name }}{% if elder.district %} - {{ elder.district.name }}{% endif %}</li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <p class="mb-0">No elders published yet.</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <h2 class="h5">Deacons</h2>
+          {% if deacons %}
+            <ul class="mb-0">
+              {% for deacon in deacons %}
+                <li>{{ deacon.full_name }}{% if deacon.district %} - {{ deacon.district.name }}{% endif %}</li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <p class="mb-0">No deacons published yet.</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

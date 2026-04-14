@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Gallery | PCEA Ngecha Mother Church{% endblock %}
+
+{% block content %}
+<section class="container py-4">
+  <h1 class="mb-3">Gallery</h1>
+  <div class="row g-3">
+    {% for album in albums %}
+      <div class="col-md-6 col-lg-4">
+        <div class="card h-100">
+          {% if album.cover_image_url %}
+            <img src="{{ album.cover_image_url }}" class="card-img-top" alt="{{ album.name }} cover" />
+          {% endif %}
+          <div class="card-body">
+            <h2 class="h5">{{ album.name }}</h2>
+            {% if album.event_date %}<p class="text-muted mb-2">{{ album.event_date.strftime('%d %b %Y') }}</p>{% endif %}
+            <p class="mb-0">{{ album.description or "Album description coming soon." }}</p>
+          </div>
+        </div>
+      </div>
+    {% else %}
+      <p>No albums published yet.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

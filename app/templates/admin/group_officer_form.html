@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}{% if officer %}Edit Officer{% else %}Add Officer{% endif %}{% endblock %}
+
+{% block content %}
+<section class="container py-4">
+  <a href="{{ url_for('admin.group_officers_list', group_id=group.id) }}" class="btn btn-sm btn-outline-secondary mb-3">Back</a>
+  <h1 class="h3 mb-3">{% if officer %}Edit Officer{% else %}Add Officer{% endif %} - {{ group.name }}</h1>
+  <div class="card">
+    <div class="card-body">
+      <form method="post" novalidate>
+        {{ form.hidden_tag() }}
+        <div class="row g-3">
+          <div class="col-md-6">{{ form.member_name.label(class_='form-label') }}{{ form.member_name(class_='form-control') }}</div>
+          <div class="col-md-4">{{ form.position.label(class_='form-label') }}{{ form.position(class_='form-control') }}</div>
+          <div class="col-md-2">{{ form.year.label(class_='form-label') }}{{ form.year(class_='form-control') }}</div>
+        </div>
+        <div class="form-check my-3">{{ form.is_current(class_='form-check-input') }}{{ form.is_current.label(class_='form-check-label') }}</div>
+        {{ form.submit(class_='btn btn-primary') }}
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}

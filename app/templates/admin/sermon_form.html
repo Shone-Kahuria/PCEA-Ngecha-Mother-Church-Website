@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}{% if sermon %}Edit Sermon{% else %}Create Sermon{% endif %}{% endblock %}
+
+{% block content %}
+<section class="container py-4">
+  <h1 class="h3 mb-3">{% if sermon %}Edit Sermon{% else %}Create Sermon{% endif %}</h1>
+  <div class="card">
+    <div class="card-body">
+      <form method="post" novalidate>
+        {{ form.hidden_tag() }}
+        <div class="row g-3">
+          <div class="col-md-8">{{ form.title.label(class_='form-label') }}{{ form.title(class_='form-control') }}</div>
+          <div class="col-md-4">{{ form.preached_on.label(class_='form-label') }}{{ form.preached_on(class_='form-control') }}</div>
+          <div class="col-md-6">{{ form.minister_id.label(class_='form-label') }}{{ form.minister_id(class_='form-select') }}</div>
+          <div class="col-md-6">{{ form.scripture.label(class_='form-label') }}{{ form.scripture(class_='form-control') }}</div>
+          <div class="col-md-6">{{ form.sermon_series.label(class_='form-label') }}{{ form.sermon_series(class_='form-control') }}</div>
+          <div class="col-md-6">{{ form.audio_url.label(class_='form-label') }}{{ form.audio_url(class_='form-control') }}</div>
+          <div class="col-12">{{ form.video_url.label(class_='form-label') }}{{ form.video_url(class_='form-control') }}</div>
+          <div class="col-12">{{ form.description.label(class_='form-label') }}{{ form.description(class_='form-control', rows='5') }}</div>
+        </div>
+        <div class="mt-3">{{ form.submit(class_='btn btn-primary') }}</div>
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}

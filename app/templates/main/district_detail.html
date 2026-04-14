@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}{{ district.name }} District{% endblock %}
+
+{% block content %}
+<section class="container py-4">
+  <a href="{{ url_for('main.districts') }}" class="btn btn-sm btn-outline-secondary mb-3">Back to Districts</a>
+  <div class="card">
+    <div class="card-body">
+      <h1 class="h3">{{ district.name }} District</h1>
+      <p>{{ district.description or "District narrative will be added by the elders board." }}</p>
+      <p><strong>Assigned Elder:</strong> {{ district.elder.full_name if district.elder else "Not assigned" }}</p>
+      <p><strong>Members:</strong> {{ member_count }}</p>
+
+      <h2 class="h5 mt-4">Deacons</h2>
+      {% if district.deacons %}
+        <ul>
+          {% for deacon in district.deacons %}
+            <li>{{ deacon.full_name }}{% if deacon.zone %} - {{ deacon.zone }}{% endif %}</li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>No deacons assigned yet.</p>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endblock %}

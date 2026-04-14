@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Ministers{% endblock %}
+
+{% block content %}
+<section class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-0">Ministers</h1>
+    <a href="{{ url_for('admin.minister_create') }}" class="btn btn-primary btn-sm">Add Minister</a>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-striped align-middle">
+      <thead><tr><th>Name</th><th>Title</th><th>Status</th><th>Actions</th></tr></thead>
+      <tbody>
+        {% for minister in ministers %}
+          <tr>
+            <td>{{ minister.full_name }}</td>
+            <td>{{ minister.title }}</td>
+            <td>{{ "Active" if minister.is_active else "Inactive" }}</td>
+            <td class="d-flex gap-2">
+              <a class="btn btn-sm btn-outline-primary" href="{{ url_for('admin.minister_edit', minister_id=minister.id) }}">Edit</a>
+              <form method="post" action="{{ url_for('admin.minister_delete', minister_id=minister.id) }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                <button class="btn btn-sm btn-outline-danger" type="submit">Deactivate</button>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

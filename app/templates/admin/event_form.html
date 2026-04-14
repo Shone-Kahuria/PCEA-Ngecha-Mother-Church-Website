@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}{% if event %}Edit Event{% else %}Create Event{% endif %}{% endblock %}
+
+{% block content %}
+<section class="container py-4">
+  <h1 class="h3 mb-3">{% if event %}Edit Event{% else %}Create Event{% endif %}</h1>
+  <div class="card">
+    <div class="card-body">
+      <form method="post" novalidate>
+        {{ form.hidden_tag() }}
+        <div class="row g-3">
+          <div class="col-md-8">{{ form.title.label(class_='form-label') }}{{ form.title(class_='form-control') }}</div>
+          <div class="col-md-4">{{ form.event_date.label(class_='form-label') }}{{ form.event_date(class_='form-control') }}</div>
+          <div class="col-md-4">{{ form.event_time.label(class_='form-label') }}{{ form.event_time(class_='form-control') }}</div>
+          <div class="col-md-8">{{ form.venue.label(class_='form-label') }}{{ form.venue(class_='form-control') }}</div>
+          <div class="col-md-6">{{ form.district_id.label(class_='form-label') }}{{ form.district_id(class_='form-select') }}</div>
+          <div class="col-md-6">{{ form.group_id.label(class_='form-label') }}{{ form.group_id(class_='form-select') }}</div>
+          <div class="col-12">{{ form.description.label(class_='form-label') }}{{ form.description(class_='form-control', rows='5') }}</div>
+        </div>
+        <div class="form-check my-3">{{ form.is_featured(class_='form-check-input') }}{{ form.is_featured.label(class_='form-check-label') }}</div>
+        {{ form.submit(class_='btn btn-primary') }}
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}

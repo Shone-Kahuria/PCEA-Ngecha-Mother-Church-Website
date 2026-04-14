@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard | PCEA Ngecha Mother Church{% endblock %}
+
+{% block content %}
+<section class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3 mb-0">Dashboard</h1>
+    <form method="post" action="{{ url_for('auth.logout') }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+      <button type="submit" class="btn btn-outline-secondary btn-sm">Logout</button>
+    </form>
+  </div>
+
+  <div class="row g-3 mb-4">
+    <div class="col-md-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <h2 class="h6 text-muted">Districts</h2>
+          <p class="display-6 mb-0">{{ stats.districts }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <h2 class="h6 text-muted">Members</h2>
+          <p class="display-6 mb-0">{{ stats.members }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <h2 class="h6 text-muted">Sermons</h2>
+          <p class="display-6 mb-0">{{ stats.sermons }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <h2 class="h5">Management Modules</h2>
+      <div class="d-flex flex-wrap gap-2">
+        <a class="btn btn-sm btn-outline-primary" href="{{ url_for('admin.districts_list') }}">Districts</a>
+        <a class="btn btn-sm btn-outline-primary" href="{{ url_for('admin.elders_list') }}">Elders</a>
+        <a class="btn btn-sm btn-outline-primary" href="{{ url_for('admin.ministers_list') }}">Ministers</a>
+        <a class="btn btn-sm btn-outline-primary" href="{{ url_for('admin.deacons_list') }}">Deacons</a>
+        <a class="btn btn-sm btn-outline-primary" href="{{ url_for('admin.sermons_list') }}">Sermons</a>
+        <a class="btn btn-sm btn-outline-primary" href="{{ url_for('admin.events_list') }}">Events</a>
+        <a class="btn btn-sm btn-outline-primary" href="{{ url_for('admin.announcements_list') }}">Announcements</a>
+        <a class="btn btn-sm btn-outline-primary" href="{{ url_for('admin.groups_list') }}">Groups</a>
+        <a class="btn btn-sm btn-outline-primary" href="{{ url_for('admin.gallery_list') }}">Gallery</a>
+        <a class="btn btn-sm btn-outline-primary" href="{{ url_for('admin.newsletter_list') }}">Newsletter</a>
+        <a class="btn btn-sm btn-outline-primary" href="{{ url_for('admin.members_list') }}">Members</a>
+        <a class="btn btn-sm btn-outline-primary" href="{{ url_for('admin.prayer_requests_list') }}">Prayer Requests</a>
+        <a class="btn btn-sm btn-outline-primary" href="{{ url_for('admin.contact_messages_list') }}">Contact Messages</a>
+        <a class="btn btn-sm btn-outline-primary" href="{{ url_for('admin.settings') }}">Settings</a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

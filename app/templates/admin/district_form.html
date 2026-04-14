@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}{% if district %}Edit District{% else %}Create District{% endif %}{% endblock %}
+
+{% block content %}
+<section class="container py-4">
+  <h1 class="h3 mb-3">{% if district %}Edit District{% else %}Create District{% endif %}</h1>
+  <div class="card">
+    <div class="card-body">
+      <form method="post" novalidate>
+        {{ form.hidden_tag() }}
+        <div class="mb-3">{{ form.name.label(class_='form-label') }}{{ form.name(class_='form-control') }}</div>
+        <div class="mb-3">{{ form.description.label(class_='form-label') }}{{ form.description(class_='form-control', rows='4') }}</div>
+        <div class="form-check mb-3">{{ form.is_active(class_='form-check-input') }}{{ form.is_active.label(class_='form-check-label') }}</div>
+        {{ form.submit(class_='btn btn-primary') }}
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}

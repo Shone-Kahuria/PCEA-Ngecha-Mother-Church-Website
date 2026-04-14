@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Group Officers{% endblock %}
+
+{% block content %}
+<section class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <a href="{{ url_for('admin.groups_list') }}" class="btn btn-sm btn-outline-secondary">Back to Groups</a>
+    <a href="{{ url_for('admin.group_officer_create', group_id=group.id) }}" class="btn btn-primary btn-sm">Add Officer</a>
+  </div>
+  <h1 class="h3 mb-3">{{ group.name }} Officers</h1>
+
+  <div class="table-responsive">
+    <table class="table table-striped align-middle">
+      <thead><tr><th>Name</th><th>Position</th><th>Year</th><th>Current</th><th>Actions</th></tr></thead>
+      <tbody>
+        {% for officer in officers %}
+          <tr>
+            <td>{{ officer.member_name }}</td>
+            <td>{{ officer.position }}</td>
+            <td>{{ officer.year }}</td>
+            <td>{{ "Yes" if officer.is_current else "No" }}</td>
+            <td class="d-flex gap-2">
+              <a class="btn btn-sm btn-outline-primary" href="{{ url_for('admin.group_officer_edit', group_id=group.id, officer_id=officer.id) }}">Edit</a>
+              <form method="post" action="{{ url_for('admin.group_officer_delete', group_id=group.id, officer_id=officer.id) }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                <button class="btn btn-sm btn-outline-danger" type="submit">Delete</button>
+              </form>
+            </td>
+          </tr>
+        {% else %}
+          <tr><td colspan="5">No officers recorded yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

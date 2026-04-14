@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Sermons{% endblock %}
+
+{% block content %}
+<section class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-0">Sermons</h1>
+    <a href="{{ url_for('admin.sermon_create') }}" class="btn btn-primary btn-sm">Add Sermon</a>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-striped align-middle">
+      <thead><tr><th>Title</th><th>Date</th><th>Preacher</th><th>Actions</th></tr></thead>
+      <tbody>
+        {% for sermon in sermons %}
+          <tr>
+            <td>{{ sermon.title }}</td>
+            <td>{{ sermon.preached_on.strftime('%d %b %Y') }}</td>
+            <td>{{ sermon.minister.full_name }}</td>
+            <td class="d-flex gap-2">
+              <a class="btn btn-sm btn-outline-primary" href="{{ url_for('admin.sermon_edit', sermon_id=sermon.id) }}">Edit</a>
+              <form method="post" action="{{ url_for('admin.sermon_delete', sermon_id=sermon.id) }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                <button class="btn btn-sm btn-outline-danger" type="submit">Delete</button>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

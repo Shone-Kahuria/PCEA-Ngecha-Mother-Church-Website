@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Groups{% endblock %}
+
+{% block content %}
+<section class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-0">Church Groups</h1>
+    <a href="{{ url_for('admin.group_create') }}" class="btn btn-primary btn-sm">Add Group</a>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-striped align-middle">
+      <thead><tr><th>Name</th><th>Category</th><th>Patron Elder</th><th>Actions</th></tr></thead>
+      <tbody>
+        {% for group in groups %}
+          <tr>
+            <td>{{ group.name }}</td>
+            <td>{{ group.category or "-" }}</td>
+            <td>{{ group.patron_elder.full_name if group.patron_elder else "Unassigned" }}</td>
+            <td class="d-flex gap-2">
+              <a class="btn btn-sm btn-outline-primary" href="{{ url_for('admin.group_officers_list', group_id=group.id) }}">Officers</a>
+              <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('admin.group_edit', group_id=group.id) }}">Edit</a>
+              <form method="post" action="{{ url_for('admin.group_delete', group_id=group.id) }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                <button class="btn btn-sm btn-outline-danger" type="submit">Deactivate</button>
+              </form>
+            </td>
+          </tr>
+        {% else %}
+          <tr><td colspan="4">No groups available yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

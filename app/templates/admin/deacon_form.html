@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}{% if deacon %}Edit Deacon{% else %}Create Deacon{% endif %}{% endblock %}
+
+{% block content %}
+<section class="container py-4">
+  <h1 class="h3 mb-3">{% if deacon %}Edit Deacon{% else %}Create Deacon{% endif %}</h1>
+  <div class="card">
+    <div class="card-body">
+      <form method="post" novalidate>
+        {{ form.hidden_tag() }}
+        <div class="row g-3">
+          <div class="col-md-6">{{ form.full_name.label(class_='form-label') }}{{ form.full_name(class_='form-control') }}</div>
+          <div class="col-md-6">{{ form.district_id.label(class_='form-label') }}{{ form.district_id(class_='form-select') }}</div>
+          <div class="col-md-6">{{ form.email.label(class_='form-label') }}{{ form.email(class_='form-control') }}</div>
+          <div class="col-md-6">{{ form.phone.label(class_='form-label') }}{{ form.phone(class_='form-control') }}</div>
+          <div class="col-md-6">{{ form.zone.label(class_='form-label') }}{{ form.zone(class_='form-control') }}</div>
+        </div>
+        <div class="form-check my-3">{{ form.is_active(class_='form-check-input') }}{{ form.is_active.label(class_='form-check-label') }}</div>
+        {{ form.submit(class_='btn btn-primary') }}
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}

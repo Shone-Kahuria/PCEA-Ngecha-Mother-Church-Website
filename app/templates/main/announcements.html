@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Announcements | PCEA Ngecha Mother Church{% endblock %}
+
+{% block content %}
+<section class="container py-4">
+  <h1 class="mb-3">Announcements</h1>
+  <div class="row g-3">
+    {% for item in announcements %}
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <h2 class="h5">{{ item.title }}</h2>
+            <p class="small text-muted mb-2">From {{ item.start_date.strftime('%d %b %Y') }}{% if item.end_date %} to {{ item.end_date.strftime('%d %b %Y') }}{% endif %}</p>
+            <p class="mb-0">{{ item.body }}</p>
+          </div>
+        </div>
+      </div>
+    {% else %}
+      <p>No active announcements available.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

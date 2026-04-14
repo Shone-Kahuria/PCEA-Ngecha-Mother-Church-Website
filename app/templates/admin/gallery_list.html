@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Gallery Management{% endblock %}
+
+{% block content %}
+<section class="container py-4">
+  <h1 class="h3 mb-3">Gallery Management</h1>
+  <div class="row g-3">
+    <div class="col-lg-5">
+      <div class="card h-100">
+        <div class="card-body">
+          <h2 class="h5">Albums</h2>
+          <ul class="mb-0">
+            {% for album in albums %}
+              <li>{{ album.name }}{% if album.event_date %} ({{ album.event_date.strftime('%d %b %Y') }}){% endif %}</li>
+            {% else %}
+              <li>No albums yet.</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-7">
+      <div class="card h-100">
+        <div class="card-body">
+          <h2 class="h5">Media Items</h2>
+          <ul class="mb-0">
+            {% for item in items %}
+              <li>{{ item.title }}{% if item.album %} - {{ item.album.name }}{% endif %}</li>
+            {% else %}
+              <li>No gallery items yet.</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

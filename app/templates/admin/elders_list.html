@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Elders{% endblock %}
+
+{% block content %}
+<section class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-0">Elders</h1>
+    <a href="{{ url_for('admin.elder_create') }}" class="btn btn-primary btn-sm">Add Elder</a>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-striped align-middle">
+      <thead><tr><th>Name</th><th>District</th><th>Status</th><th>Actions</th></tr></thead>
+      <tbody>
+        {% for elder in elders %}
+          <tr>
+            <td>{{ elder.full_name }}</td>
+            <td>{{ elder.district.name if elder.district else "Unassigned" }}</td>
+            <td>{{ "Active" if elder.is_active else "Inactive" }}</td>
+            <td class="d-flex gap-2">
+              <a class="btn btn-sm btn-outline-primary" href="{{ url_for('admin.elder_edit', elder_id=elder.id) }}">Edit</a>
+              <form method="post" action="{{ url_for('admin.elder_delete', elder_id=elder.id) }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                <button class="btn btn-sm btn-outline-danger" type="submit">Deactivate</button>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

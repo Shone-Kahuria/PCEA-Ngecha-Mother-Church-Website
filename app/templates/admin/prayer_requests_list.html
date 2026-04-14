@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Prayer Requests{% endblock %}
+
+{% block content %}
+<section class="container py-4">
+  <h1 class="h3 mb-3">Prayer Requests</h1>
+  <div class="table-responsive">
+    <table class="table table-striped align-middle">
+      <thead><tr><th>Name</th><th>Email</th><th>Request</th><th>Submitted</th><th>Status</th></tr></thead>
+      <tbody>
+        {% for item in prayer_requests %}
+          <tr>
+            <td>{{ item.name }}</td>
+            <td>{{ item.email or "-" }}</td>
+            <td>{{ item.request_text[:100] }}{% if item.request_text|length > 100 %}...{% endif %}</td>
+            <td>{{ item.submitted_at.strftime('%d %b %Y') }}</td>
+            <td>{{ "Answered" if item.is_answered else "Pending" }}</td>
+          </tr>
+        {% else %}
+          <tr><td colspan="5">No prayer requests yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

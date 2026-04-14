@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Groups | PCEA Ngecha Mother Church{% endblock %}
+
+{% block content %}
+<section class="container py-4">
+  <h1 class="mb-3">Church Groups and Fellowships</h1>
+  <div class="row g-3">
+    {% for group in groups %}
+      <div class="col-md-6 col-lg-4">
+        <div class="card h-100">
+          <div class="card-body">
+            <h2 class="h5">{{ group.name }}</h2>
+            <p class="mb-2">{{ group.description or "Group profile will be published soon." }}</p>
+            <p class="small text-muted">Patron: {{ group.patron_elder.full_name if group.patron_elder else "Not assigned" }}</p>
+            <a class="btn btn-sm btn-outline-primary" href="{{ url_for('main.group_detail', group_id=group.id) }}">View Group</a>
+          </div>
+        </div>
+      </div>
+    {% else %}
+      <p>No groups have been published yet.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}
