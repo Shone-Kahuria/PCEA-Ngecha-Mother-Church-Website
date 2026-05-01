@@ -8,13 +8,21 @@
     <h1 class="h3 mb-0">Ministers</h1>
     <a href="{{ url_for('admin.minister_create') }}" class="btn btn-primary btn-sm">Add Minister</a>
   </div>
+  <p class="text-muted mb-3">Manage active clergy records and titles used across sermons, team pages, and ministry communication.</p>
 
   <div class="table-responsive">
     <table class="table table-striped align-middle">
-      <thead><tr><th>Name</th><th>Title</th><th>Status</th><th>Actions</th></tr></thead>
+      <thead><tr><th>Photo</th><th>Name</th><th>Title</th><th>Status</th><th>Actions</th></tr></thead>
       <tbody>
         {% for minister in ministers %}
           <tr>
+            <td>
+              {% if minister.photo_url %}
+                <img src="{{ minister.photo_url }}" alt="{{ minister.full_name }}" class="img-thumbnail" style="max-width: 64px;" />
+              {% else %}
+                <span class="text-muted small">No photo</span>
+              {% endif %}
+            </td>
             <td>{{ minister.full_name }}</td>
             <td>{{ minister.title }}</td>
             <td>{{ "Active" if minister.is_active else "Inactive" }}</td>
@@ -26,6 +34,8 @@
               </form>
             </td>
           </tr>
+        {% else %}
+          <tr><td colspan="5">No ministers available yet.</td></tr>
         {% endfor %}
       </tbody>
     </table>

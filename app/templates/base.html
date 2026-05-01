@@ -6,7 +6,7 @@
     <title>{% block title %}PCEA Ngecha Mother Church{% endblock %}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -15,40 +15,45 @@
     />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/site.css') }}" />
   </head>
-  <body class="site-body">
+  <body class="site-body {{ 'mode-admin' if request.blueprint == 'admin' else ('mode-auth' if request.blueprint == 'auth' else 'mode-main') }}">
     <div class="site-backdrop" aria-hidden="true"></div>
-    <nav class="navbar navbar-expand-lg navbar-dark brand-nav py-3 sticky-top">
-      <div class="container">
-        <a class="navbar-brand fw-bold brand-mark" href="{{ url_for('main.home') }}">
-          <span class="brand-mark-flame"></span>
-          <span>PCEA Ngecha</span>
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain" aria-controls="navMain" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navMain">
-          <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
-            <li class="nav-item"><a class="nav-link {{ 'active' if request.endpoint == 'main.home' else '' }}" href="{{ url_for('main.home') }}">Home</a></li>
-            <li class="nav-item"><a class="nav-link {{ 'active' if request.endpoint == 'main.about' else '' }}" href="{{ url_for('main.about') }}">About</a></li>
-            <li class="nav-item"><a class="nav-link {{ 'active' if request.endpoint == 'main.our_team' else '' }}" href="{{ url_for('main.our_team') }}">Our Team</a></li>
-            <li class="nav-item"><a class="nav-link {{ 'active' if request.endpoint in ['main.sermons', 'main.sermon_detail'] else '' }}" href="{{ url_for('main.sermons') }}">Sermons</a></li>
-            <li class="nav-item"><a class="nav-link {{ 'active' if request.endpoint in ['main.events', 'main.event_detail'] else '' }}" href="{{ url_for('main.events') }}">Events</a></li>
-            <li class="nav-item"><a class="nav-link {{ 'active' if request.endpoint in ['main.districts', 'main.district_detail'] else '' }}" href="{{ url_for('main.districts') }}">Districts</a></li>
-            <li class="nav-item"><a class="nav-link {{ 'active' if request.endpoint in ['main.groups', 'main.group_detail'] else '' }}" href="{{ url_for('main.groups') }}">Groups</a></li>
-            <li class="nav-item"><a class="nav-link {{ 'active' if request.endpoint == 'main.give' else '' }}" href="{{ url_for('main.give') }}">Give</a></li>
-            <li class="nav-item"><a class="nav-link {{ 'active' if request.endpoint == 'main.contact' else '' }}" href="{{ url_for('main.contact') }}">Contact</a></li>
-            {% if current_user.is_authenticated %}
-              <li class="nav-item ms-lg-2"><a class="btn btn-sm btn-light" href="{{ url_for('admin.dashboard') }}">Dashboard</a></li>
-            {% else %}
-              <li class="nav-item ms-lg-2"><a class="btn btn-sm btn-outline-light" href="{{ url_for('auth.login') }}">Admin</a></li>
-            {% endif %}
-          </ul>
+    <header class="site-header">
+      <nav class="navbar navbar-expand-lg navbar-dark brand-nav py-3" id="siteNav">
+        <div class="container">
+          <a class="navbar-brand fw-bold brand-mark" href="{{ url_for('main.home') }}">
+            <img class="brand-mark-logo" src="{{ url_for('static', filename='Images/PCEA Logo.jpg') }}" alt="" width="44" height="44" />
+            <span>
+              PCEA Ngecha
+              <small>Mother Church</small>
+            </span>
+          </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain" aria-controls="navMain" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navMain">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
+              <li class="nav-item"><a class="nav-link {{ 'active' if request.endpoint == 'main.home' else '' }}" href="{{ url_for('main.home') }}">Home</a></li>
+              <li class="nav-item"><a class="nav-link {{ 'active' if request.endpoint == 'main.about' else '' }}" href="{{ url_for('main.about') }}">About</a></li>
+              <li class="nav-item"><a class="nav-link {{ 'active' if request.endpoint == 'main.our_team' else '' }}" href="{{ url_for('main.our_team') }}">Our Team</a></li>
+              <li class="nav-item"><a class="nav-link {{ 'active' if request.endpoint in ['main.sermons', 'main.sermon_detail'] else '' }}" href="{{ url_for('main.sermons') }}">Sermons</a></li>
+              <li class="nav-item"><a class="nav-link {{ 'active' if request.endpoint in ['main.events', 'main.event_detail'] else '' }}" href="{{ url_for('main.events') }}">Events</a></li>
+              <li class="nav-item"><a class="nav-link {{ 'active' if request.endpoint in ['main.districts', 'main.district_detail'] else '' }}" href="{{ url_for('main.districts') }}">Districts</a></li>
+              <li class="nav-item"><a class="nav-link {{ 'active' if request.endpoint in ['main.groups', 'main.group_detail'] else '' }}" href="{{ url_for('main.groups') }}">Groups</a></li>
+              <li class="nav-item"><a class="nav-link {{ 'active' if request.endpoint == 'main.give' else '' }}" href="{{ url_for('main.give') }}">Give</a></li>
+              <li class="nav-item"><a class="nav-link {{ 'active' if request.endpoint == 'main.contact' else '' }}" href="{{ url_for('main.contact') }}">Contact</a></li>
+              {% if current_user.is_authenticated %}
+                <li class="nav-item ms-lg-2"><a class="btn btn-sm btn-light" href="{{ url_for('admin.dashboard') }}">Dashboard</a></li>
+              {% else %}
+                <li class="nav-item ms-lg-2"><a class="btn btn-sm btn-outline-light" href="{{ url_for('auth.login') }}">Admin</a></li>
+              {% endif %}
+            </ul>
+          </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+    </header>
 
-    <main class="py-4 page-main">
-      <div class="container">
+    <main class="page-main">
+      <div class="container pt-3">
         {% with messages = get_flashed_messages(with_categories=true) %}
           {% if messages %}
             {% for category, message in messages %}
@@ -63,19 +68,25 @@
       {% block content %}{% endblock %}
     </main>
 
-    <footer class="py-5 site-footer">
-      <div class="container">
-        <div class="row g-4 align-items-center">
-          <div class="col-md-7">
-            <h2 class="h6 text-uppercase mb-2">PCEA Ngecha Mother Church</h2>
-            <p class="mb-0 footer-copy">A digital home for worship, fellowship, discipleship, and ministry coordination.</p>
+    <footer class="site-footer">
+      <div class="container py-5">
+        <div class="footer-grid align-items-start">
+          <div>
+            <p class="footer-heading">PCEA Ngecha Mother Church</p>
+            <p class="footer-copy">A digital home for worship, fellowship, discipleship, and ministry coordination.</p>
           </div>
-          <div class="col-md-5 text-md-end">
-            <div class="footer-links mb-2">
+          <div>
+            <p class="footer-heading">Quick Access</p>
+            <div class="footer-links">
               <a href="{{ url_for('main.sermons') }}">Sermons</a>
               <a href="{{ url_for('main.events') }}">Events</a>
               <a href="{{ url_for('main.prayer') }}">Prayer</a>
+              <a href="{{ url_for('main.groups') }}">Groups</a>
             </div>
+          </div>
+          <div class="footer-meta text-md-end">
+            <p class="footer-heading">Worship</p>
+            <p class="mb-1">Sunday Service: 9:00 AM</p>
             <small>Copyright {{ current_year }} | Soli Deo Gloria</small>
           </div>
         </div>

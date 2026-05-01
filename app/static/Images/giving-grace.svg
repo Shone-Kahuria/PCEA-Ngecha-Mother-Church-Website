@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 520" role="img" aria-labelledby="title desc">
+  <title id="title">Generous giving visual</title>
+  <desc id="desc">An abstract visual symbolizing stewardship and generosity.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1c285f"/>
+      <stop offset="55%" stop-color="#2a3b82"/>
+      <stop offset="100%" stop-color="#7c243f"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="520" fill="url(#bg)"/>
+  <circle cx="936" cy="126" r="78" fill="#f2be2d" fill-opacity="0.44"/>
+  <path d="M514 338 c-48 -56 -140 -16 -140 56 c0 84 140 140 226 126 c86 14 226 -42 226 -126 c0 -72 -92 -112 -140 -56 c-34 42 -74 80 -86 100 c-12 -20 -52 -58 -86 -100 z" fill="#ffffff" fill-opacity="0.24"/>
+  <rect x="188" y="124" width="262" height="162" rx="18" fill="#ffffff" fill-opacity="0.9"/>
+  <circle cx="258" cy="204" r="38" fill="#c91d1d"/>
+  <text x="246" y="214" fill="#ffffff" font-size="32" font-family="Verdana, sans-serif">+</text>
+  <rect x="300" y="184" width="122" height="16" rx="8" fill="#2a3a78"/>
+  <rect x="300" y="214" width="104" height="16" rx="8" fill="#2a3a78"/>
+  <text x="76" y="92" fill="#ffffff" font-size="44" font-family="Georgia, serif">Give With Gratitude</text>
+  <text x="76" y="134" fill="#ffffff" fill-opacity="0.84" font-size="24" font-family="Verdana, sans-serif">Your generosity fuels worship, care, and mission.</text>
+</svg>

@@ -3,8 +3,14 @@
 {% block title %}Forbidden{% endblock %}
 
 {% block content %}
-<section class="container py-5 text-center">
-  <h1 class="display-6">403</h1>
-  <p class="lead">You do not have permission to access this page.</p>
+<section class="container py-5 error-shell">
+  <div class="card">
+    <div class="card-body py-5">
+      <p class="error-code">403</p>
+      <h1 class="h3 mb-2">Access Restricted</h1>
+      <p class="lead">You do not have permission to access this page.</p>
+      <a class="btn btn-outline-primary" href="{{ url_for('main.home') }}">Return Home</a>
+    </div>
+  </div>
 </section>
 {% endblock %}

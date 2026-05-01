@@ -4,21 +4,26 @@
 
 {% block content %}
 <section class="container py-4">
+  <p class="text-uppercase fw-semibold text-muted mb-2">Fellowship Life</p>
   <h1 class="mb-3">Church Groups and Fellowships</h1>
+  <p class="mb-4">Our groups nurture spiritual growth, mentorship, accountability, and service. Find a fellowship where you can belong, learn, and contribute.</p>
+  <img src="{{ url_for('static', filename='Images/about-community.svg') }}" class="page-banner-image" alt="Church groups and fellowship" />
+
   <div class="row g-3">
     {% for group in groups %}
       <div class="col-md-6 col-lg-4">
         <div class="card h-100">
+          <img src="{{ group.image_url or url_for('static', filename='Images/ministry-placeholder.svg') }}" class="card-img-top" alt="{{ group.name }}" />
           <div class="card-body">
             <h2 class="h5">{{ group.name }}</h2>
-            <p class="mb-2">{{ group.description or "Group profile will be published soon." }}</p>
+            <p class="mb-2">{{ group.description or "A growing fellowship focused on discipleship, support, and ministry participation." }}</p>
             <p class="small text-muted">Patron: {{ group.patron_elder.full_name if group.patron_elder else "Not assigned" }}</p>
             <a class="btn btn-sm btn-outline-primary" href="{{ url_for('main.group_detail', group_id=group.id) }}">View Group</a>
           </div>
         </div>
       </div>
     {% else %}
-      <p>No groups have been published yet.</p>
+      <p class="mb-0">No groups are currently published. Please check again soon.</p>
     {% endfor %}
   </div>
 </section>

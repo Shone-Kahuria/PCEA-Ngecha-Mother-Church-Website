@@ -3,25 +3,34 @@
 {% block title %}Admin Login | PCEA Ngecha Mother Church{% endblock %}
 
 {% block content %}
-<section class="container py-4">
-  <div class="row justify-content-center">
-    <div class="col-md-6 col-lg-5">
-      <div class="card shadow-sm">
-        <div class="card-body p-4">
-          <h1 class="h4 mb-3">Admin Sign In</h1>
-          <p class="small text-muted">After running the seed command, default admin email is admin@pceangecha.co.ke and password is ChangeMe123!.</p>
-          <form method="post" novalidate>
-            {{ form.hidden_tag() }}
-            <div class="mb-3">
-              {{ form.email.label(class_="form-label") }}
-              {{ form.email(class_="form-control", placeholder="name@example.com") }}
-            </div>
-            <div class="mb-3">
-              {{ form.password.label(class_="form-label") }}
-              {{ form.password(class_="form-control", placeholder="Your password") }}
-            </div>
-            {{ form.submit(class_="btn btn-primary w-100") }}
-          </form>
+<section class="container py-4 auth-shell">
+  <div class="row g-4 justify-content-center align-items-stretch">
+    <div class="col-lg-5">
+      <div class="auth-panel h-100 p-4">
+        <p class="text-uppercase fw-semibold text-muted mb-2">Administrative Access</p>
+        <h1 class="h3 mb-2">Admin Sign In</h1>
+        <p class="small text-muted mb-4">Secure access for pastors, ministry staff, and platform administrators.</p>
+        <form method="post" novalidate>
+          {{ form.hidden_tag() }}
+          <div class="mb-3">
+            {{ form.email.label(class_="form-label") }}
+            {{ form.email(class_="form-control", placeholder="name@example.com") }}
+          </div>
+          <div class="mb-3">
+            {{ form.password.label(class_="form-label") }}
+            {{ form.password(class_="form-control", placeholder="Your password") }}
+          </div>
+          {{ form.submit(class_="btn btn-primary w-100") }}
+        </form>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="card h-100">
+        <div class="card-body auth-tips">
+          <h2 class="h5">Environment Seed Credentials</h2>
+          <p class="small text-muted">Use these defaults only in a local development setup and rotate credentials immediately in production.</p>
+          <p class="mb-1"><strong>Email:</strong> admin@pceangecha.co.ke</p>
+          <p class="mb-0"><strong>Password:</strong> ChangeMe123!</p>
         </div>
       </div>
     </div>

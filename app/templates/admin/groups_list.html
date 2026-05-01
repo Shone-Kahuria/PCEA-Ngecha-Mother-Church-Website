@@ -8,12 +8,20 @@
     <h1 class="h3 mb-0">Church Groups</h1>
     <a href="{{ url_for('admin.group_create') }}" class="btn btn-primary btn-sm">Add Group</a>
   </div>
+  <p class="text-muted mb-3">Coordinate discipleship and fellowship groups, including officers and elder oversight.</p>
   <div class="table-responsive">
     <table class="table table-striped align-middle">
-      <thead><tr><th>Name</th><th>Category</th><th>Patron Elder</th><th>Actions</th></tr></thead>
+      <thead><tr><th>Image</th><th>Name</th><th>Category</th><th>Patron Elder</th><th>Actions</th></tr></thead>
       <tbody>
         {% for group in groups %}
           <tr>
+            <td>
+              {% if group.image_url %}
+                <img src="{{ group.image_url }}" alt="{{ group.name }}" class="img-thumbnail" style="max-width: 64px;" />
+              {% else %}
+                <span class="text-muted small">No image</span>
+              {% endif %}
+            </td>
             <td>{{ group.name }}</td>
             <td>{{ group.category or "-" }}</td>
             <td>{{ group.patron_elder.full_name if group.patron_elder else "Unassigned" }}</td>
@@ -27,7 +35,7 @@
             </td>
           </tr>
         {% else %}
-          <tr><td colspan="4">No groups available yet.</td></tr>
+          <tr><td colspan="5">No groups available yet.</td></tr>
         {% endfor %}
       </tbody>
     </table>

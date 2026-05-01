@@ -1,15 +1,20 @@
 from functools import wraps
+from pathlib import Path
+from uuid import uuid4
 
-from flask import Blueprint, abort, flash, redirect, render_template, request, url_for
+from flask import Blueprint, abort, current_app, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required
+from werkzeug.utils import secure_filename
 
 from ...extensions import db
 from ...forms import (
+    AlbumForm,
     AnnouncementForm,
     DeaconForm,
     DistrictForm,
     ElderForm,
     EventForm,
+    GalleryItemForm,
     GroupForm,
     GroupOfficerForm,
     MemberForm,
@@ -37,6 +42,8 @@ from ...models import (
 
 bp = Blueprint("admin", __name__, url_prefix="/admin")
 
+ALLOWED_IMAGE_EXTENSIONS = {"jpg", "jpeg", "png", "webp", "gif"}
+
 
 def roles_required(*allowed_roles):
     def decorator(view):
@@ -57,6 +64,30 @@ def _optional_fk(value: int | None):
     if not value or value == 0:
         return None
     return value
+
+
+def _save_uploaded_image(file_storage, folder: str) -> str | None:
+    if not file_storage or not getattr(file_storage, "filename", ""):
+        return None
+
+    filename = secure_filename(file_storage.filename)
+    if not filename:
+        raise ValueError("Please choose a valid image file.")
+
+    extension = filename.rsplit(".", 1)[-1].lower() if "." in filename else ""
+    if extension not in ALLOWED_IMAGE_EXTENSIONS:
+        allowed = ", ".join(sorted(ALLOWED_IMAGE_EXTENSIONS))
+        raise ValueError(f"Unsupported image format. Allowed: {allowed}.")
+
+    relative_folder = Path("uploads") / folder
+    destination_folder = Path(current_app.static_folder) / relative_folder
+    destination_folder.mkdir(parents=True, exist_ok=True)
+
+    unique_name = f"{uuid4().hex}.{extension}"
+    destination = destination_folder / unique_name
+    file_storage.save(destination)
+
+    return url_for("static", filename=f"{relative_folder.as_posix()}/{unique_name}")
 
 
 def editor_or_admin_required(view):
@@ -107,9 +138,16 @@ def district_detail(district_id: int):
 def district_create():
     form = DistrictForm()
     if form.validate_on_submit():
+        try:
+            image_url = _save_uploaded_image(form.image.data, "districts")
+        except ValueError as exc:
+            flash(str(exc), "warning")
+            return render_template("admin/district_form.html", form=form, district=None)
+
         district = District(
             name=form.name.data.strip(),
             description=(form.description.data or "").strip() or None,
+            image_url=image_url,
             is_active=form.is_active.data,
         )
         db.session.add(district)
@@ -126,8 +164,16 @@ def district_edit(district_id: int):
     district = District.query.get_or_404(district_id)
     form = DistrictForm(obj=district)
     if form.validate_on_submit():
+        try:
+            image_url = _save_uploaded_image(form.image.data, "districts")
+        except ValueError as exc:
+            flash(str(exc), "warning")
+            return render_template("admin/district_form.html", form=form, district=district)
+
         district.name = form.name.data.strip()
         district.description = (form.description.data or "").strip() or None
+        if image_url:
+            district.image_url = image_url
         district.is_active = form.is_active.data
         db.session.commit()
         flash("District updated successfully.", "success")
@@ -170,11 +216,18 @@ def elder_create():
     form.district_id.choices = district_choices
 
     if form.validate_on_submit():
+        try:
+            photo_url = _save_uploaded_image(form.photo.data, "elders")
+        except ValueError as exc:
+            flash(str(exc), "warning")
+            return render_template("admin/elder_form.html", form=form, elder=None)
+
         elder = Elder(
             full_name=form.full_name.data.strip(),
             email=(form.email.data or "").strip().lower() or None,
             phone=(form.phone.data or "").strip() or None,
             bio=(form.bio.data or "").strip() or None,
+            photo_url=photo_url,
             district_id=_optional_fk(form.district_id.data),
             is_active=form.is_active.data,
         )
@@ -199,10 +252,18 @@ def elder_edit(elder_id: int):
         form.district_id.data = elder.district_id or 0
 
     if form.validate_on_submit():
+        try:
+            photo_url = _save_uploaded_image(form.photo.data, "elders")
+        except ValueError as exc:
+            flash(str(exc), "warning")
+            return render_template("admin/elder_form.html", form=form, elder=elder)
+
         elder.full_name = form.full_name.data.strip()
         elder.email = (form.email.data or "").strip().lower() or None
         elder.phone = (form.phone.data or "").strip() or None
         elder.bio = (form.bio.data or "").strip() or None
+        if photo_url:
+            elder.photo_url = photo_url
         elder.district_id = _optional_fk(form.district_id.data)
         elder.is_active = form.is_active.data
         db.session.commit()
@@ -236,12 +297,19 @@ def ministers_list():
 def minister_create():
     form = MinisterForm()
     if form.validate_on_submit():
+        try:
+            photo_url = _save_uploaded_image(form.photo.data, "ministers")
+        except ValueError as exc:
+            flash(str(exc), "warning")
+            return render_template("admin/minister_form.html", form=form, minister=None)
+
         minister = Minister(
             full_name=form.full_name.data.strip(),
             title=form.title.data.strip(),
             email=(form.email.data or "").strip().lower() or None,
             phone=(form.phone.data or "").strip() or None,
             bio=(form.bio.data or "").strip() or None,
+            photo_url=photo_url,
             is_reverend=form.is_reverend.data,
             is_active=form.is_active.data,
         )
@@ -259,11 +327,19 @@ def minister_edit(minister_id: int):
     minister = Minister.query.get_or_404(minister_id)
     form = MinisterForm(obj=minister)
     if form.validate_on_submit():
+        try:
+            photo_url = _save_uploaded_image(form.photo.data, "ministers")
+        except ValueError as exc:
+            flash(str(exc), "warning")
+            return render_template("admin/minister_form.html", form=form, minister=minister)
+
         minister.full_name = form.full_name.data.strip()
         minister.title = form.title.data.strip()
         minister.email = (form.email.data or "").strip().lower() or None
         minister.phone = (form.phone.data or "").strip() or None
         minister.bio = (form.bio.data or "").strip() or None
+        if photo_url:
+            minister.photo_url = photo_url
         minister.is_reverend = form.is_reverend.data
         minister.is_active = form.is_active.data
         db.session.commit()
@@ -379,12 +455,19 @@ def event_create():
     ]
 
     if form.validate_on_submit():
+        try:
+            image_url = _save_uploaded_image(form.image.data, "events")
+        except ValueError as exc:
+            flash(str(exc), "warning")
+            return render_template("admin/event_form.html", form=form, event=None)
+
         event = Event(
             title=form.title.data.strip(),
             description=(form.description.data or "").strip() or None,
             event_date=form.event_date.data,
             event_time=form.event_time.data,
             venue=(form.venue.data or "").strip() or None,
+            image_url=image_url,
             district_id=_optional_fk(form.district_id.data),
             group_id=_optional_fk(form.group_id.data),
             is_featured=form.is_featured.data,
@@ -413,11 +496,19 @@ def event_edit(event_id: int):
         form.group_id.data = event.group_id or 0
 
     if form.validate_on_submit():
+        try:
+            image_url = _save_uploaded_image(form.image.data, "events")
+        except ValueError as exc:
+            flash(str(exc), "warning")
+            return render_template("admin/event_form.html", form=form, event=event)
+
         event.title = form.title.data.strip()
         event.description = (form.description.data or "").strip() or None
         event.event_date = form.event_date.data
         event.event_time = form.event_time.data
         event.venue = (form.venue.data or "").strip() or None
+        if image_url:
+            event.image_url = image_url
         event.district_id = _optional_fk(form.district_id.data)
         event.group_id = _optional_fk(form.group_id.data)
         event.is_featured = form.is_featured.data
@@ -596,11 +687,18 @@ def deacon_create():
         (d.id, d.name) for d in District.query.filter_by(is_active=True).order_by(District.name.asc()).all()
     ]
     if form.validate_on_submit():
+        try:
+            photo_url = _save_uploaded_image(form.photo.data, "deacons")
+        except ValueError as exc:
+            flash(str(exc), "warning")
+            return render_template("admin/deacon_form.html", form=form, deacon=None)
+
         deacon = Deacon(
             full_name=form.full_name.data.strip(),
             email=(form.email.data or "").strip().lower() or None,
             phone=(form.phone.data or "").strip() or None,
             zone=(form.zone.data or "").strip() or None,
+            photo_url=photo_url,
             district_id=form.district_id.data,
             is_active=form.is_active.data,
         )
@@ -621,10 +719,18 @@ def deacon_edit(deacon_id: int):
         (d.id, d.name) for d in District.query.filter_by(is_active=True).order_by(District.name.asc()).all()
     ]
     if form.validate_on_submit():
+        try:
+            photo_url = _save_uploaded_image(form.photo.data, "deacons")
+        except ValueError as exc:
+            flash(str(exc), "warning")
+            return render_template("admin/deacon_form.html", form=form, deacon=deacon)
+
         deacon.full_name = form.full_name.data.strip()
         deacon.email = (form.email.data or "").strip().lower() or None
         deacon.phone = (form.phone.data or "").strip() or None
         deacon.zone = (form.zone.data or "").strip() or None
+        if photo_url:
+            deacon.photo_url = photo_url
         deacon.district_id = form.district_id.data
         deacon.is_active = form.is_active.data
         db.session.commit()
@@ -662,11 +768,18 @@ def group_create():
         for e in Elder.query.filter_by(is_active=True).order_by(Elder.full_name.asc()).all()
     ]
     if form.validate_on_submit():
+        try:
+            image_url = _save_uploaded_image(form.image.data, "groups")
+        except ValueError as exc:
+            flash(str(exc), "warning")
+            return render_template("admin/group_form.html", form=form, group=None)
+
         group = ChurchGroup(
             name=form.name.data.strip(),
             category=(form.category.data or "").strip() or None,
             description=(form.description.data or "").strip() or None,
             patron_elder_id=_optional_fk(form.patron_elder_id.data),
+            image_url=image_url,
             is_active=form.is_active.data,
         )
         db.session.add(group)
@@ -689,10 +802,18 @@ def group_edit(group_id: int):
     if request.method == "GET":
         form.patron_elder_id.data = group.patron_elder_id or 0
     if form.validate_on_submit():
+        try:
+            image_url = _save_uploaded_image(form.image.data, "groups")
+        except ValueError as exc:
+            flash(str(exc), "warning")
+            return render_template("admin/group_form.html", form=form, group=group)
+
         group.name = form.name.data.strip()
         group.category = (form.category.data or "").strip() or None
         group.description = (form.description.data or "").strip() or None
         group.patron_elder_id = _optional_fk(form.patron_elder_id.data)
+        if image_url:
+            group.image_url = image_url
         group.is_active = form.is_active.data
         db.session.commit()
         flash("Group updated successfully.", "success")
@@ -777,6 +898,148 @@ def gallery_list():
     albums = Album.query.order_by(Album.event_date.desc()).all()
     items = GalleryItem.query.order_by(GalleryItem.created_at.desc()).all()
     return render_template("admin/gallery_list.html", albums=albums, items=items)
+
+
+@bp.route("/gallery/albums/new", methods=["GET", "POST"])
+@login_required
+@editor_or_admin_required
+def gallery_album_create():
+    form = AlbumForm()
+    if form.validate_on_submit():
+        try:
+            cover_image_url = _save_uploaded_image(form.cover_image.data, "gallery/albums")
+        except ValueError as exc:
+            flash(str(exc), "warning")
+            return render_template("admin/album_form.html", form=form, album=None)
+
+        album = Album(
+            name=form.name.data.strip(),
+            event_date=form.event_date.data,
+            description=(form.description.data or "").strip() or None,
+            cover_image_url=cover_image_url,
+        )
+        db.session.add(album)
+        db.session.commit()
+        flash("Album created successfully.", "success")
+        return redirect(url_for("admin.gallery_list"))
+
+    return render_template("admin/album_form.html", form=form, album=None)
+
+
+@bp.route("/gallery/albums/<int:album_id>/edit", methods=["GET", "POST"])
+@login_required
+@editor_or_admin_required
+def gallery_album_edit(album_id: int):
+    album = Album.query.get_or_404(album_id)
+    form = AlbumForm(obj=album)
+    if form.validate_on_submit():
+        try:
+            cover_image_url = _save_uploaded_image(form.cover_image.data, "gallery/albums")
+        except ValueError as exc:
+            flash(str(exc), "warning")
+            return render_template("admin/album_form.html", form=form, album=album)
+
+        album.name = form.name.data.strip()
+        album.event_date = form.event_date.data
+        album.description = (form.description.data or "").strip() or None
+        if cover_image_url:
+            album.cover_image_url = cover_image_url
+        db.session.commit()
+        flash("Album updated successfully.", "success")
+        return redirect(url_for("admin.gallery_list"))
+
+    return render_template("admin/album_form.html", form=form, album=album)
+
+
+@bp.route("/gallery/albums/<int:album_id>/delete", methods=["POST"])
+@login_required
+@editor_or_admin_required
+def gallery_album_delete(album_id: int):
+    album = Album.query.get_or_404(album_id)
+    if album.items:
+        flash("Cannot delete album with gallery items. Remove items first.", "warning")
+        return redirect(url_for("admin.gallery_list"))
+
+    db.session.delete(album)
+    db.session.commit()
+    flash("Album deleted successfully.", "success")
+    return redirect(url_for("admin.gallery_list"))
+
+
+@bp.route("/gallery/items/new", methods=["GET", "POST"])
+@login_required
+@editor_or_admin_required
+def gallery_item_create():
+    form = GalleryItemForm()
+    form.album_id.choices = [(0, "No album")] + [
+        (album.id, album.name) for album in Album.query.order_by(Album.event_date.desc()).all()
+    ]
+
+    if form.validate_on_submit():
+        try:
+            image_url = _save_uploaded_image(form.image.data, "gallery/items")
+        except ValueError as exc:
+            flash(str(exc), "warning")
+            return render_template("admin/gallery_item_form.html", form=form, item=None)
+
+        if not image_url:
+            flash("Please upload an image for this gallery item.", "warning")
+            return render_template("admin/gallery_item_form.html", form=form, item=None)
+
+        item = GalleryItem(
+            title=form.title.data.strip(),
+            image_url=image_url,
+            album_id=_optional_fk(form.album_id.data),
+            description=(form.description.data or "").strip() or None,
+        )
+        db.session.add(item)
+        db.session.commit()
+        flash("Gallery item created successfully.", "success")
+        return redirect(url_for("admin.gallery_list"))
+
+    return render_template("admin/gallery_item_form.html", form=form, item=None)
+
+
+@bp.route("/gallery/items/<int:item_id>/edit", methods=["GET", "POST"])
+@login_required
+@editor_or_admin_required
+def gallery_item_edit(item_id: int):
+    item = GalleryItem.query.get_or_404(item_id)
+    form = GalleryItemForm(obj=item)
+    form.album_id.choices = [(0, "No album")] + [
+        (album.id, album.name) for album in Album.query.order_by(Album.event_date.desc()).all()
+    ]
+    if request.method == "GET":
+        form.album_id.data = item.album_id or 0
+
+    if form.validate_on_submit():
+        try:
+            image_url = _save_uploaded_image(form.image.data, "gallery/items")
+        except ValueError as exc:
+            flash(str(exc), "warning")
+            return render_template("admin/gallery_item_form.html", form=form, item=item)
+
+        item.title = form.title.data.strip()
+        item.album_id = _optional_fk(form.album_id.data)
+        item.description = (form.description.data or "").strip() or None
+        if image_url:
+            item.image_url = image_url
+        db.session.commit()
+        flash("Gallery item updated successfully.", "success")
+        return redirect(url_for("admin.gallery_list"))
+
+    return render_template("admin/gallery_item_form.html", form=form, item=item)
+
+
+@bp.route("/gallery/items/<int:item_id>/delete", methods=["POST"])
+@login_required
+@editor_or_admin_required
+def gallery_item_delete(item_id: int):
+    item = GalleryItem.query.get_or_404(item_id)
+    db.session.delete(item)
+    db.session.commit()
+    flash("Gallery item deleted successfully.", "success")
+    return redirect(url_for("admin.gallery_list"))
 
 
 @bp.route("/newsletter")

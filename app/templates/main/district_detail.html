@@ -6,9 +6,10 @@
 <section class="container py-4">
   <a href="{{ url_for('main.districts') }}" class="btn btn-sm btn-outline-secondary mb-3">Back to Districts</a>
   <div class="card">
+    <img src="{{ district.image_url or url_for('static', filename='Images/ministry-placeholder.svg') }}" class="card-img-top" alt="{{ district.name }}" />
     <div class="card-body">
       <h1 class="h3">{{ district.name }} District</h1>
-      <p>{{ district.description or "District narrative will be added by the elders board." }}</p>
+      <p>{{ district.description or "This district gathers members for fellowship, care, discipleship, and community witness." }}</p>
       <p><strong>Assigned Elder:</strong> {{ district.elder.full_name if district.elder else "Not assigned" }}</p>
       <p><strong>Members:</strong> {{ member_count }}</p>
 
@@ -20,7 +21,7 @@
           {% endfor %}
         </ul>
       {% else %}
-        <p>No deacons assigned yet.</p>
+        <p>No deacons are currently listed for this district.</p>
       {% endif %}
     </div>
   </div>

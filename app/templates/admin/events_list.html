@@ -8,13 +8,21 @@
     <h1 class="h3 mb-0">Events</h1>
     <a href="{{ url_for('admin.event_create') }}" class="btn btn-primary btn-sm">Add Event</a>
   </div>
+  <p class="text-muted mb-3">Manage upcoming calendar items and ensure congregation-facing event information stays accurate.</p>
 
   <div class="table-responsive">
     <table class="table table-striped align-middle">
-      <thead><tr><th>Title</th><th>Date</th><th>Venue</th><th>Actions</th></tr></thead>
+      <thead><tr><th>Image</th><th>Title</th><th>Date</th><th>Venue</th><th>Actions</th></tr></thead>
       <tbody>
         {% for event in events %}
           <tr>
+            <td>
+              {% if event.image_url %}
+                <img src="{{ event.image_url }}" alt="{{ event.title }}" class="img-thumbnail" style="max-width: 64px;" />
+              {% else %}
+                <span class="text-muted small">No image</span>
+              {% endif %}
+            </td>
             <td>{{ event.title }}</td>
             <td>{{ event.event_date.strftime('%d %b %Y') }}</td>
             <td>{{ event.venue or "TBD" }}</td>
@@ -26,6 +34,8 @@
               </form>
             </td>
           </tr>
+        {% else %}
+          <tr><td colspan="5">No events available yet.</td></tr>
         {% endfor %}
       </tbody>
     </table>

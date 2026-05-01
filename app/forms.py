@@ -1,4 +1,5 @@
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileAllowed, FileField
 from wtforms import (
     BooleanField,
     DateField,
@@ -13,6 +14,10 @@ from wtforms import (
 from wtforms.validators import DataRequired, Email, Length, NumberRange, Optional
 
 
+IMAGE_EXTENSIONS = ["jpg", "jpeg", "png", "webp", "gif"]
+IMAGE_UPLOAD_MESSAGE = "Only image files are allowed (jpg, jpeg, png, webp, gif)."
+
+
 class LoginForm(FlaskForm):
     email = StringField("Email", validators=[DataRequired(), Email()])
     password = PasswordField(
@@ -25,6 +30,10 @@ class LoginForm(FlaskForm):
 class DistrictForm(FlaskForm):
     name = StringField("District Name", validators=[DataRequired(), Length(max=80)])
     description = TextAreaField("Description", validators=[Optional()])
+    image = FileField(
+        "District Image",
+        validators=[Optional(), FileAllowed(IMAGE_EXTENSIONS, IMAGE_UPLOAD_MESSAGE)],
+    )
     is_active = BooleanField("Is Active", default=True)
     submit = SubmitField("Save District")
 
@@ -34,6 +43,10 @@ class ElderForm(FlaskForm):
     email = StringField("Email", validators=[Optional(), Email(), Length(max=255)])
     phone = StringField("Phone", validators=[Optional(), Length(max=30)])
     bio = TextAreaField("Bio", validators=[Optional()])
+    photo = FileField(
+        "Photo",
+        validators=[Optional(), FileAllowed(IMAGE_EXTENSIONS, IMAGE_UPLOAD_MESSAGE)],
+    )
     district_id = SelectField("Assigned District", coerce=int, validators=[Optional()])
     is_active = BooleanField("Is Active", default=True)
     submit = SubmitField("Save Elder")
@@ -45,6 +58,10 @@ class MinisterForm(FlaskForm):
     email = StringField("Email", validators=[Optional(), Email(), Length(max=255)])
     phone = StringField("Phone", validators=[Optional(), Length(max=30)])
     bio = TextAreaField("Bio", validators=[Optional()])
+    photo = FileField(
+        "Photo",
+        validators=[Optional(), FileAllowed(IMAGE_EXTENSIONS, IMAGE_UPLOAD_MESSAGE)],
+    )
     is_reverend = BooleanField("Is Reverend", default=False)
     is_active = BooleanField("Is Active", default=True)
     submit = SubmitField("Save Minister")
@@ -68,6 +85,10 @@ class EventForm(FlaskForm):
     event_date = DateField("Date", validators=[DataRequired()])
     event_time = TimeField("Time", validators=[Optional()])
     venue = StringField("Venue", validators=[Optional(), Length(max=200)])
+    image = FileField(
+        "Event Image",
+        validators=[Optional(), FileAllowed(IMAGE_EXTENSIONS, IMAGE_UPLOAD_MESSAGE)],
+    )
     district_id = SelectField("District", coerce=int, validators=[Optional()])
     group_id = SelectField("Group", coerce=int, validators=[Optional()])
     is_featured = BooleanField("Featured", default=False)
@@ -121,6 +142,10 @@ class DeaconForm(FlaskForm):
     email = StringField("Email", validators=[Optional(), Email(), Length(max=255)])
     phone = StringField("Phone", validators=[Optional(), Length(max=30)])
     zone = StringField("Zone", validators=[Optional(), Length(max=80)])
+    photo = FileField(
+        "Photo",
+        validators=[Optional(), FileAllowed(IMAGE_EXTENSIONS, IMAGE_UPLOAD_MESSAGE)],
+    )
     district_id = SelectField("District", coerce=int, validators=[DataRequired()])
     is_active = BooleanField("Is Active", default=True)
     submit = SubmitField("Save Deacon")
@@ -130,9 +155,35 @@ class GroupForm(FlaskForm):
     name = StringField("Name", validators=[DataRequired(), Length(max=150)])
     category = StringField("Category", validators=[Optional(), Length(max=80)])
     description = TextAreaField("Description", validators=[Optional()])
+    image = FileField(
+        "Group Image",
+        validators=[Optional(), FileAllowed(IMAGE_EXTENSIONS, IMAGE_UPLOAD_MESSAGE)],
+    )
     patron_elder_id = SelectField("Patron Elder", coerce=int, validators=[Optional()])
     is_active = BooleanField("Is Active", default=True)
     submit = SubmitField("Save Group")
+
+
+class AlbumForm(FlaskForm):
+    name = StringField("Album Name", validators=[DataRequired(), Length(max=150)])
+    event_date = DateField("Event Date", validators=[Optional()])
+    description = TextAreaField("Description", validators=[Optional()])
+    cover_image = FileField(
+        "Cover Image",
+        validators=[Optional(), FileAllowed(IMAGE_EXTENSIONS, IMAGE_UPLOAD_MESSAGE)],
+    )
+    submit = SubmitField("Save Album")
+
+
+class GalleryItemForm(FlaskForm):
+    title = StringField("Title", validators=[DataRequired(), Length(max=150)])
+    album_id = SelectField("Album", coerce=int, validators=[Optional()])
+    description = TextAreaField("Description", validators=[Optional()])
+    image = FileField(
+        "Image",
+        validators=[Optional(), FileAllowed(IMAGE_EXTENSIONS, IMAGE_UPLOAD_MESSAGE)],
+    )
+    submit = SubmitField("Save Gallery Item")
 
 
 class GroupOfficerForm(FlaskForm):

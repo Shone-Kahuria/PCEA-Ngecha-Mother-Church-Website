@@ -6,6 +6,7 @@
 <section class="container py-4">
   <a href="{{ url_for('admin.group_officers_list', group_id=group.id) }}" class="btn btn-sm btn-outline-secondary mb-3">Back</a>
   <h1 class="h3 mb-3">{% if officer %}Edit Officer{% else %}Add Officer{% endif %} - {{ group.name }}</h1>
+  <p class="text-muted mb-3">Record current and historical leadership roles for this group to preserve accountability and continuity.</p>
   <div class="card">
     <div class="card-body">
       <form method="post" novalidate>

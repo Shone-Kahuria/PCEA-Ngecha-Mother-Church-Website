@@ -5,6 +5,8 @@
 {% block content %}
 <section class="container py-4">
   <p class="text-uppercase fw-semibold text-muted mb-2">Word Archive</p>
+  <p class="mb-3">Explore sermon teachings from our ministers and guest preachers. Use the filter to browse messages by preacher.</p>
+  <img src="{{ url_for('static', filename='Images/sermons-teaching.svg') }}" class="page-banner-image" alt="Sermon teaching visual" />
   <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
     <h1 class="mb-0">Sermons</h1>
     <form method="get" class="d-flex gap-2">
@@ -22,16 +24,18 @@
     {% for sermon in sermons %}
       <div class="col-md-6 col-lg-4">
         <div class="card h-100">
+          <img src="{{ sermon.minister.photo_url or url_for('static', filename='Images/leader-placeholder.svg') }}" class="card-img-top card-media-image" alt="{{ sermon.minister.full_name }}" />
           <div class="card-body">
             <h2 class="h6">{{ sermon.title }}</h2>
             <p class="small text-muted mb-2">{{ sermon.preached_on.strftime('%d %b %Y') }} | {{ sermon.minister.full_name }}</p>
             <p class="mb-3">{{ sermon.scripture or "Scripture to be updated" }}</p>
+            <p class="small text-muted mb-3">{{ (sermon.description or "Teaching summary will be added by the ministry team.")[:130] }}{% if sermon.description and sermon.description|length > 130 %}...{% endif %}</p>
             <a href="{{ url_for('main.sermon_detail', sermon_id=sermon.id) }}" class="btn btn-sm btn-outline-primary">Read</a>
           </div>
         </div>
       </div>
     {% else %}
-      <p>No sermons available yet.</p>
+      <p class="mb-0">No sermons are currently published. Please check back soon for new teaching content.</p>
     {% endfor %}
   </div>
 </section>

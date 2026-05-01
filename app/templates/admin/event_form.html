@@ -5,15 +5,22 @@
 {% block content %}
 <section class="container py-4">
   <h1 class="h3 mb-3">{% if event %}Edit Event{% else %}Create Event{% endif %}</h1>
+  <p class="text-muted mb-3">Plan worship services, outreach events, and ministry gatherings with complete date, venue, and media details.</p>
   <div class="card">
     <div class="card-body">
-      <form method="post" novalidate>
+      <form method="post" enctype="multipart/form-data" novalidate>
         {{ form.hidden_tag() }}
         <div class="row g-3">
           <div class="col-md-8">{{ form.title.label(class_='form-label') }}{{ form.title(class_='form-control') }}</div>
           <div class="col-md-4">{{ form.event_date.label(class_='form-label') }}{{ form.event_date(class_='form-control') }}</div>
           <div class="col-md-4">{{ form.event_time.label(class_='form-label') }}{{ form.event_time(class_='form-control') }}</div>
           <div class="col-md-8">{{ form.venue.label(class_='form-label') }}{{ form.venue(class_='form-control') }}</div>
+          <div class="col-12">{{ form.image.label(class_='form-label') }}{{ form.image(class_='form-control', accept='image/*') }}</div>
+          {% if event and event.image_url %}
+            <div class="col-12">
+              <img src="{{ event.image_url }}" alt="Event image" class="img-thumbnail" style="max-width: 220px;" />
+            </div>
+          {% endif %}
           <div class="col-md-6">{{ form.district_id.label(class_='form-label') }}{{ form.district_id(class_='form-select') }}</div>
           <div class="col-md-6">{{ form.group_id.label(class_='form-label') }}{{ form.group_id(class_='form-select') }}</div>
           <div class="col-12">{{ form.description.label(class_='form-label') }}{{ form.description(class_='form-control', rows='5') }}</div>

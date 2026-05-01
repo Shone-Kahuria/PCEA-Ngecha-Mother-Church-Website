@@ -4,21 +4,26 @@
 
 {% block content %}
 <section class="container py-4">
+  <p class="text-uppercase fw-semibold text-muted mb-2">Community Care</p>
   <h1 class="mb-3">Districts</h1>
+  <p class="mb-4">Districts are our pastoral care and fellowship units where members grow in faith, receive support, and serve one another in practical ways.</p>
+  <img src="{{ url_for('static', filename='Images/about-community.svg') }}" class="page-banner-image" alt="District and community life visual" />
+
   <div class="row g-3">
     {% for district in districts %}
       <div class="col-md-6 col-lg-4">
         <div class="card h-100">
+          <img src="{{ district.image_url or url_for('static', filename='Images/ministry-placeholder.svg') }}" class="card-img-top" alt="{{ district.name }}" />
           <div class="card-body">
             <h2 class="h5">{{ district.name }}</h2>
-            <p class="mb-2">{{ district.description or "District profile is being updated." }}</p>
+            <p class="mb-2">{{ district.description or "This district is a local fellowship hub for discipleship, care, and outreach." }}</p>
             <p class="small text-muted">Elder: {{ district.elder.full_name if district.elder else "Not assigned" }}</p>
             <a class="btn btn-sm btn-outline-primary" href="{{ url_for('main.district_detail', district_id=district.id) }}">View District</a>
           </div>
         </div>
       </div>
     {% else %}
-      <p>No districts available yet.</p>
+      <p class="mb-0">District information is being prepared. Please check back shortly.</p>
     {% endfor %}
   </div>
 </section>

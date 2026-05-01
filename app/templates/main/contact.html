@@ -6,11 +6,13 @@
 <section class="container py-4">
   <p class="text-uppercase fw-semibold text-muted mb-2">Reach Out</p>
   <h1 class="mb-3">Contact Us</h1>
-  <p class="mb-4">Questions, pastoral support, event requests, or ministry inquiries are welcome. Send a message and our team will respond.</p>
+  <p class="mb-4">Questions, pastoral support, event requests, or ministry inquiries are welcome. Send a message and our team will respond as promptly as possible.</p>
+  <img src="{{ url_for('static', filename='Images/contact-office.svg') }}" class="page-banner-image" alt="Church office contact illustration" />
   <div class="row g-4">
     <div class="col-lg-7">
       <div class="card">
         <div class="card-body">
+          <h2 class="h5 mb-3">Send a Message</h2>
           <form method="post" novalidate>
             {{ form.hidden_tag() }}
             <div class="mb-3">{{ form.name.label(class_='form-label') }}{{ form.name(class_='form-control') }}</div>
@@ -30,7 +32,10 @@
           <p class="mb-1">PCEA Ngecha Mother Church</p>
           <p class="mb-1">Ngecha, Kiambu County, Kenya</p>
           <p class="mb-1">Phone: +254 700 000000</p>
-          <p class="mb-0">Email: info@pceangecha.co.ke</p>
+          <p class="mb-3">Email: info@pceangecha.co.ke</p>
+          <h3 class="h6 mb-2">Office Hours</h3>
+          <p class="small mb-1">Monday - Friday: 8:30 AM - 5:00 PM</p>
+          <p class="small mb-0">Saturday: 9:00 AM - 1:00 PM</p>
         </div>
       </div>
     </div>

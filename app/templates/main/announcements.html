@@ -4,7 +4,11 @@
 
 {% block content %}
 <section class="container py-4">
+  <p class="text-uppercase fw-semibold text-muted mb-2">Church Updates</p>
   <h1 class="mb-3">Announcements</h1>
+  <p class="mb-4">Stay informed on ministry notices, service updates, fellowship programs, and special church activities.</p>
+  <img src="{{ url_for('static', filename='Images/announcements-notice.svg') }}" class="page-banner-image" alt="Announcement board illustration" />
+
   <div class="row g-3">
     {% for item in announcements %}
       <div class="col-12">
@@ -17,7 +21,7 @@
         </div>
       </div>
     {% else %}
-      <p>No active announcements available.</p>
+      <p class="mb-0">No active announcements are published right now. Please check back soon or subscribe to the weekly bulletin from the home page.</p>
     {% endfor %}
   </div>
 </section>

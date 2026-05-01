@@ -8,12 +8,20 @@
     <h1 class="h3 mb-0">Deacons</h1>
     <a href="{{ url_for('admin.deacon_create') }}" class="btn btn-primary btn-sm">Add Deacon</a>
   </div>
+  <p class="text-muted mb-3">Maintain accurate service rosters for deacons, including district assignments, contact details, and status.</p>
   <div class="table-responsive">
     <table class="table table-striped align-middle">
-      <thead><tr><th>Name</th><th>District</th><th>Zone</th><th>Status</th><th>Actions</th></tr></thead>
+      <thead><tr><th>Photo</th><th>Name</th><th>District</th><th>Zone</th><th>Status</th><th>Actions</th></tr></thead>
       <tbody>
         {% for deacon in deacons %}
           <tr>
+            <td>
+              {% if deacon.photo_url %}
+                <img src="{{ deacon.photo_url }}" alt="{{ deacon.full_name }}" class="img-thumbnail" style="max-width: 64px;" />
+              {% else %}
+                <span class="text-muted small">No photo</span>
+              {% endif %}
+            </td>
             <td>{{ deacon.full_name }}</td>
             <td>{{ deacon.district.name if deacon.district else "Unassigned" }}</td>
             <td>{{ deacon.zone or "-" }}</td>
@@ -27,7 +35,7 @@
             </td>
           </tr>
         {% else %}
-          <tr><td colspan="5">No deacons available yet.</td></tr>
+          <tr><td colspan="6">No deacons available yet.</td></tr>
         {% endfor %}
       </tbody>
     </table>

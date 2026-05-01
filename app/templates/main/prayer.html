@@ -4,8 +4,11 @@
 
 {% block content %}
 <section class="container py-4">
+  <p class="text-uppercase fw-semibold text-muted mb-2">Intercession</p>
   <h1 class="mb-3">Prayer Requests</h1>
-  <p class="text-muted">Share your prayer request. The pastoral and intercessory teams will pray with confidentiality and care.</p>
+  <p class="text-muted">Share your prayer request. Our pastoral and intercessory teams will stand with you in prayer with confidentiality and care.</p>
+  <p class="mb-4">You may include thanksgiving reports, family needs, health concerns, exams, work challenges, or any spiritual burden you are carrying.</p>
+  <img src="{{ url_for('static', filename='Images/prayer-support.svg') }}" class="page-banner-image" alt="Prayer and pastoral support" />
 
   <div class="card">
     <div class="card-body">
@@ -16,6 +19,13 @@
         <div class="mb-3">{{ form.request_text.label(class_='form-label') }}{{ form.request_text(class_='form-control', rows='6') }}</div>
         {{ form.submit(class_='btn btn-primary') }}
       </form>
+    </div>
+  </div>
+
+  <div class="card mt-3">
+    <div class="card-body">
+      <h2 class="h5">Need Immediate Pastoral Support?</h2>
+      <p class="mb-0">If your request is urgent, also use the Contact page or call the church office so a minister or elder can follow up quickly.</p>
     </div>
   </div>
 </section>

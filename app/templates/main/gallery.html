@@ -4,14 +4,17 @@
 
 {% block content %}
 <section class="container py-4">
+  <p class="text-uppercase fw-semibold text-muted mb-2">Church Memories</p>
   <h1 class="mb-3">Gallery</h1>
+  <p class="text-muted mb-4">Moments from worship, ministry events, fellowships, and church life.</p>
+  <img src="{{ url_for('static', filename='Images/home-worship.svg') }}" class="page-banner-image" alt="Photo memories of church life" />
+
+  <h2 class="h4 mb-3">Albums</h2>
   <div class="row g-3">
     {% for album in albums %}
       <div class="col-md-6 col-lg-4">
         <div class="card h-100">
-          {% if album.cover_image_url %}
-            <img src="{{ album.cover_image_url }}" class="card-img-top" alt="{{ album.name }} cover" />
-          {% endif %}
+          <img src="{{ album.cover_image_url or url_for('static', filename='Images/ministry-placeholder.svg') }}" class="card-img-top" alt="{{ album.name }} cover" />
           <div class="card-body">
             <h2 class="h5">{{ album.name }}</h2>
             {% if album.event_date %}<p class="text-muted mb-2">{{ album.event_date.strftime('%d %b %Y') }}</p>{% endif %}
@@ -21,6 +24,24 @@
       </div>
     {% else %}
       <p>No albums published yet.</p>
+    {% endfor %}
+  </div>
+
+  <h2 class="h4 mt-5 mb-3">Latest Photos</h2>
+  <p class="text-muted mb-3">A quick view of recently added highlights across our ministry calendar.</p>
+  <div class="row g-3">
+    {% for item in items %}
+      <div class="col-sm-6 col-lg-3">
+        <div class="card h-100">
+          <img src="{{ item.image_url }}" class="card-img-top" alt="{{ item.title }}" />
+          <div class="card-body">
+            <h3 class="h6 mb-1">{{ item.title }}</h3>
+            {% if item.album %}<p class="small text-muted mb-0">{{ item.album.name }}</p>{% endif %}
+          </div>
+        </div>
+      </div>
+    {% else %}
+      <p>No gallery photos published yet.</p>
     {% endfor %}
   </div>
 </section>

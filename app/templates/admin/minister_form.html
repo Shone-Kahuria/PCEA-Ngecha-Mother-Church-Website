@@ -5,15 +5,22 @@
 {% block content %}
 <section class="container py-4">
   <h1 class="h3 mb-3">{% if minister %}Edit Minister{% else %}Create Minister{% endif %}</h1>
+  <p class="text-muted mb-3">Build complete minister profiles to support preaching schedules, pastoral visibility, and archive quality.</p>
   <div class="card">
     <div class="card-body">
-      <form method="post" novalidate>
+      <form method="post" enctype="multipart/form-data" novalidate>
         {{ form.hidden_tag() }}
         <div class="row g-3">
           <div class="col-md-6">{{ form.full_name.label(class_='form-label') }}{{ form.full_name(class_='form-control') }}</div>
           <div class="col-md-6">{{ form.title.label(class_='form-label') }}{{ form.title(class_='form-control') }}</div>
           <div class="col-md-6">{{ form.email.label(class_='form-label') }}{{ form.email(class_='form-control') }}</div>
           <div class="col-md-6">{{ form.phone.label(class_='form-label') }}{{ form.phone(class_='form-control') }}</div>
+          <div class="col-12">{{ form.photo.label(class_='form-label') }}{{ form.photo(class_='form-control', accept='image/*') }}</div>
+          {% if minister and minister.photo_url %}
+            <div class="col-12">
+              <img src="{{ minister.photo_url }}" alt="Minister photo" class="img-thumbnail" style="max-width: 180px;" />
+            </div>
+          {% endif %}
           <div class="col-12">{{ form.bio.label(class_='form-label') }}{{ form.bio(class_='form-control', rows='4') }}</div>
         </div>
         <div class="form-check mt-3">{{ form.is_reverend(class_='form-check-input') }}{{ form.is_reverend.label(class_='form-check-label') }}</div>

@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 520" role="img" aria-labelledby="title desc">
+  <title id="title">Sermon and teaching visual</title>
+  <desc id="desc">An abstract image representing preaching and Bible teaching.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f4efe5"/>
+      <stop offset="52%" stop-color="#f6f8fd"/>
+      <stop offset="100%" stop-color="#e9eef9"/>
+    </linearGradient>
+    <linearGradient id="podium" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#263377"/>
+      <stop offset="100%" stop-color="#1b255b"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="520" fill="url(#bg)"/>
+  <rect x="0" y="430" width="1200" height="90" fill="#f2be2d" fill-opacity="0.45"/>
+  <rect x="494" y="188" width="212" height="242" rx="16" fill="url(#podium)"/>
+  <rect x="458" y="154" width="284" height="52" rx="14" fill="#c91d1d"/>
+  <rect x="278" y="118" width="156" height="212" rx="16" fill="#ffffff" stroke="#d7deef" stroke-width="4"/>
+  <line x1="300" y1="156" x2="408" y2="156" stroke="#2b3773" stroke-opacity="0.6" stroke-width="8"/>
+  <line x1="300" y1="192" x2="408" y2="192" stroke="#2b3773" stroke-opacity="0.6" stroke-width="8"/>
+  <line x1="300" y1="228" x2="392" y2="228" stroke="#2b3773" stroke-opacity="0.6" stroke-width="8"/>
+  <text x="80" y="96" fill="#1c275f" font-size="44" font-family="Georgia, serif">The Word For Today</text>
+  <text x="80" y="138" fill="#3f4962" font-size="24" font-family="Verdana, sans-serif">Listen, learn, and grow through biblical teaching.</text>
+</svg>

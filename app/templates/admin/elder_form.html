@@ -5,15 +5,22 @@
 {% block content %}
 <section class="container py-4">
   <h1 class="h3 mb-3">{% if elder %}Edit Elder{% else %}Create Elder{% endif %}</h1>
+  <p class="text-muted mb-3">Maintain elder profiles and biographies so members can identify pastoral contacts for each district.</p>
   <div class="card">
     <div class="card-body">
-      <form method="post" novalidate>
+      <form method="post" enctype="multipart/form-data" novalidate>
         {{ form.hidden_tag() }}
         <div class="row g-3">
           <div class="col-md-6">{{ form.full_name.label(class_='form-label') }}{{ form.full_name(class_='form-control') }}</div>
           <div class="col-md-6">{{ form.district_id.label(class_='form-label') }}{{ form.district_id(class_='form-select') }}</div>
           <div class="col-md-6">{{ form.email.label(class_='form-label') }}{{ form.email(class_='form-control') }}</div>
           <div class="col-md-6">{{ form.phone.label(class_='form-label') }}{{ form.phone(class_='form-control') }}</div>
+          <div class="col-12">{{ form.photo.label(class_='form-label') }}{{ form.photo(class_='form-control', accept='image/*') }}</div>
+          {% if elder and elder.photo_url %}
+            <div class="col-12">
+              <img src="{{ elder.photo_url }}" alt="Elder photo" class="img-thumbnail" style="max-width: 180px;" />
+            </div>
+          {% endif %}
           <div class="col-12">{{ form.bio.label(class_='form-label') }}{{ form.bio(class_='form-control', rows='4') }}</div>
         </div>
         <div class="form-check my-3">{{ form.is_active(class_='form-check-input') }}{{ form.is_active.label(class_='form-check-label') }}</div>

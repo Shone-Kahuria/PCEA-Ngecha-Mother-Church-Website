@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" role="img" aria-labelledby="title desc">
+  <title id="title">Ministry placeholder image</title>
+  <desc id="desc">A generic church-themed placeholder image used when a page item has no uploaded photo.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ece7dc"/>
+      <stop offset="100%" stop-color="#e6ebf8"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="520" fill="url(#bg)"/>
+  <rect x="0" y="386" width="900" height="134" fill="#1f2b66" fill-opacity="0.78"/>
+  <circle cx="220" cy="190" r="86" fill="#f2be2d" fill-opacity="0.42"/>
+  <path d="M450 354 v-164" stroke="#c91d1d" stroke-width="18" stroke-linecap="round"/>
+  <path d="M382 244 h136" stroke="#c91d1d" stroke-width="16" stroke-linecap="round"/>
+  <text x="90" y="458" fill="#ffffff" font-size="34" font-family="Georgia, serif">PCEA Ngecha</text>
+  <text x="90" y="492" fill="#ffffff" fill-opacity="0.82" font-size="20" font-family="Verdana, sans-serif">Image coming soon</text>
+</svg>

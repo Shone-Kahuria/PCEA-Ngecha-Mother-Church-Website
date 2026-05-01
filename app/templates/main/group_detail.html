@@ -6,9 +6,11 @@
 <section class="container py-4">
   <a href="{{ url_for('main.groups') }}" class="btn btn-sm btn-outline-secondary mb-3">Back to Groups</a>
   <div class="card">
+    <img src="{{ group.image_url or url_for('static', filename='Images/ministry-placeholder.svg') }}" class="card-img-top" alt="{{ group.name }}" />
     <div class="card-body">
       <h1 class="h3">{{ group.name }}</h1>
-      <p>{{ group.description or "Group details will be added by the leadership team." }}</p>
+      <p>{{ group.description or "This fellowship provides a space for discipleship, encouragement, prayer, and shared service." }}</p>
+      {% if group.category %}<p><strong>Category:</strong> {{ group.category }}</p>{% endif %}
       <p><strong>Patron Elder:</strong> {{ group.patron_elder.full_name if group.patron_elder else "Not assigned" }}</p>
 
       <h2 class="h5 mt-4">Current Officers</h2>
@@ -19,7 +21,7 @@
           {% endfor %}
         </ul>
       {% else %}
-        <p>No officers listed yet.</p>
+        <p>No officers are currently listed for this group.</p>
       {% endif %}
     </div>
   </div>

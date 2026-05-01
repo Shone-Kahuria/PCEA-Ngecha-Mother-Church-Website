@@ -12,6 +12,7 @@ from ...models import (
     District,
     Elder,
     Event,
+    GalleryItem,
     ChurchGroup,
     Member,
     Minister,
@@ -154,7 +155,8 @@ def group_detail(group_id: int):
 @bp.route("/gallery")
 def gallery():
     albums = Album.query.order_by(Album.event_date.desc()).all()
-    return render_template("main/gallery.html", albums=albums)
+    items = GalleryItem.query.order_by(GalleryItem.created_at.desc()).all()
+    return render_template("main/gallery.html", albums=albums, items=items)
 
 
 @bp.route("/give")

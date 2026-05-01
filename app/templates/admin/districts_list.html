@@ -8,15 +8,23 @@
     <h1 class="h3 mb-0">Districts</h1>
     <a href="{{ url_for('admin.district_create') }}" class="btn btn-primary btn-sm">Add District</a>
   </div>
+  <p class="text-muted mb-3">Oversee district records, assigned elders, and activation state to keep administrative boundaries clear.</p>
 
   <div class="table-responsive">
     <table class="table table-striped align-middle">
       <thead>
-        <tr><th>Name</th><th>Elder</th><th>Status</th><th>Actions</th></tr>
+        <tr><th>Image</th><th>Name</th><th>Elder</th><th>Status</th><th>Actions</th></tr>
       </thead>
       <tbody>
         {% for district in districts %}
           <tr>
+            <td>
+              {% if district.image_url %}
+                <img src="{{ district.image_url }}" alt="{{ district.name }}" class="img-thumbnail" style="max-width: 64px;" />
+              {% else %}
+                <span class="text-muted small">No image</span>
+              {% endif %}
+            </td>
             <td>{{ district.name }}</td>
             <td>{{ district.elder.full_name if district.elder else "Unassigned" }}</td>
             <td>{{ "Active" if district.is_active else "Inactive" }}</td>
@@ -29,6 +37,8 @@
               </form>
             </td>
           </tr>
+        {% else %}
+          <tr><td colspan="5">No districts available yet.</td></tr>
         {% endfor %}
       </tbody>
     </table>

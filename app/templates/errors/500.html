@@ -3,8 +3,14 @@
 {% block title %}Server Error{% endblock %}
 
 {% block content %}
-<section class="container py-5 text-center">
-  <h1 class="display-6">500</h1>
-  <p class="lead">An unexpected error occurred. Please try again shortly.</p>
+<section class="container py-5 error-shell">
+  <div class="card">
+    <div class="card-body py-5">
+      <p class="error-code">500</p>
+      <h1 class="h3 mb-2">Unexpected Server Error</h1>
+      <p class="lead">An unexpected error occurred. Please try again shortly.</p>
+      <a class="btn btn-outline-primary" href="{{ url_for('main.home') }}">Return Home</a>
+    </div>
+  </div>
 </section>
 {% endblock %}

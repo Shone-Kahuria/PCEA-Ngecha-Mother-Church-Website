@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 520" role="img" aria-labelledby="title desc">
+  <title id="title">Community ministry visual</title>
+  <desc id="desc">An abstract image representing fellowship and church family life.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f2ede2"/>
+      <stop offset="52%" stop-color="#f7f3eb"/>
+      <stop offset="100%" stop-color="#e8edf9"/>
+    </linearGradient>
+    <linearGradient id="wave" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#1f2b66" stop-opacity="0.86"/>
+      <stop offset="100%" stop-color="#7a1e36" stop-opacity="0.84"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="520" fill="url(#bg)"/>
+  <path d="M0 352 C196 282 380 404 582 354 C818 294 1000 418 1200 352 L1200 520 L0 520 Z" fill="url(#wave)"/>
+  <path d="M0 404 C210 346 390 452 580 404 C790 350 992 466 1200 414 L1200 520 L0 520 Z" fill="#f2be2d" fill-opacity="0.42"/>
+  <g fill="#1f2b66" fill-opacity="0.2">
+    <circle cx="180" cy="228" r="64"/>
+    <circle cx="280" cy="236" r="84"/>
+    <circle cx="390" cy="252" r="56"/>
+  </g>
+  <g fill="#ffffff" fill-opacity="0.86">
+    <circle cx="820" cy="208" r="24"/>
+    <circle cx="860" cy="240" r="24"/>
+    <circle cx="900" cy="208" r="24"/>
+    <circle cx="940" cy="240" r="24"/>
+    <circle cx="980" cy="208" r="24"/>
+  </g>
+  <text x="80" y="102" fill="#1a2458" font-size="46" font-family="Georgia, serif">Built On Faith, Rooted In Community</text>
+  <text x="80" y="146" fill="#3d4660" font-size="25" font-family="Verdana, sans-serif">Serving one another through worship, discipleship, and care.</text>
+</svg>

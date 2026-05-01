@@ -8,6 +8,7 @@
   <div class="card">
     <div class="card-body">
       <h1 class="h4">{{ district.name }}</h1>
+      <p class="text-muted mb-3">District profile summary for leadership assignment, membership visibility, and local ministry coordination.</p>
       <p>{{ district.description or "No description provided." }}</p>
       <p><strong>Status:</strong> {{ "Active" if district.is_active else "Inactive" }}</p>
       <p><strong>Elder:</strong> {{ district.elder.full_name if district.elder else "Unassigned" }}</p>

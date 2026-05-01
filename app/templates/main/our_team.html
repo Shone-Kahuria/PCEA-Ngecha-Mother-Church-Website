@@ -4,7 +4,10 @@
 
 {% block content %}
 <section class="container py-4">
+  <p class="text-uppercase fw-semibold text-muted mb-2">Leadership</p>
   <h1 class="mb-3">Our Team</h1>
+  <p class="mb-4">Our ministers, elders, and deacons serve the church in teaching, pastoral care, governance, and practical ministry support.</p>
+  <img src="{{ url_for('static', filename='Images/about-community.svg') }}" class="page-banner-image" alt="Church leadership and service" />
 
   <div class="row g-3">
     <div class="col-lg-4">
@@ -14,7 +17,10 @@
           {% if ministers %}
             <ul class="mb-0">
               {% for minister in ministers %}
-                <li>{{ minister.full_name }} ({{ minister.title }})</li>
+                <li class="d-flex align-items-center gap-2 mb-2">
+                  <img src="{{ minister.photo_url or url_for('static', filename='Images/leader-placeholder.svg') }}" alt="{{ minister.full_name }}" class="leader-avatar" />
+                  <span>{{ minister.full_name }} ({{ minister.title }})</span>
+                </li>
               {% endfor %}
             </ul>
           {% else %}
@@ -31,7 +37,10 @@
           {% if elders %}
             <ul class="mb-0">
               {% for elder in elders %}
-                <li>{{ elder.full_name }}{% if elder.district %} - {{ elder.district.name }}{% endif %}</li>
+                <li class="d-flex align-items-center gap-2 mb-2">
+                  <img src="{{ elder.photo_url or url_for('static', filename='Images/leader-placeholder.svg') }}" alt="{{ elder.full_name }}" class="leader-avatar" />
+                  <span>{{ elder.full_name }}{% if elder.district %} - {{ elder.district.name }}{% endif %}</span>
+                </li>
               {% endfor %}
             </ul>
           {% else %}
@@ -48,7 +57,10 @@
           {% if deacons %}
             <ul class="mb-0">
               {% for deacon in deacons %}
-                <li>{{ deacon.full_name }}{% if deacon.district %} - {{ deacon.district.name }}{% endif %}</li>
+                <li class="d-flex align-items-center gap-2 mb-2">
+                  <img src="{{ deacon.photo_url or url_for('static', filename='Images/leader-placeholder.svg') }}" alt="{{ deacon.full_name }}" class="leader-avatar" />
+                  <span>{{ deacon.full_name }}{% if deacon.district %} - {{ deacon.district.name }}{% endif %}</span>
+                </li>
               {% endfor %}
             </ul>
           {% else %}
@@ -56,6 +68,13 @@
           {% endif %}
         </div>
       </div>
+    </div>
+  </div>
+
+  <div class="card mt-3">
+    <div class="card-body">
+      <h2 class="h5">Pastoral Care and Ministry Support</h2>
+      <p class="mb-0">For counseling, visitation, prayer support, or ministry coordination, please reach out through the Contact page and our team will guide you appropriately.</p>
     </div>
   </div>
 </section>

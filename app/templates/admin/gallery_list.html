@@ -4,19 +4,50 @@
 
 {% block content %}
 <section class="container py-4">
-  <h1 class="h3 mb-3">Gallery Management</h1>
+  <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+    <h1 class="h3 mb-0">Gallery Management</h1>
+    <div class="d-flex gap-2 flex-wrap">
+      <a class="btn btn-sm btn-outline-primary" href="{{ url_for('admin.gallery_album_create') }}">Add Album</a>
+      <a class="btn btn-sm btn-primary" href="{{ url_for('admin.gallery_item_create') }}">Add Gallery Item</a>
+    </div>
+  </div>
+  <p class="text-muted mb-3">Curate album covers and photo highlights that reflect worship, fellowship, and community outreach.</p>
   <div class="row g-3">
     <div class="col-lg-5">
       <div class="card h-100">
         <div class="card-body">
           <h2 class="h5">Albums</h2>
-          <ul class="mb-0">
-            {% for album in albums %}
-              <li>{{ album.name }}{% if album.event_date %} ({{ album.event_date.strftime('%d %b %Y') }}){% endif %}</li>
-            {% else %}
-              <li>No albums yet.</li>
-            {% endfor %}
-          </ul>
+          <div class="table-responsive">
+            <table class="table table-striped align-middle">
+              <thead><tr><th>Cover</th><th>Name</th><th>Actions</th></tr></thead>
+              <tbody>
+                {% for album in albums %}
+                  <tr>
+                    <td>
+                      {% if album.cover_image_url %}
+                        <img src="{{ album.cover_image_url }}" alt="{{ album.name }} cover" class="img-thumbnail" style="max-width: 70px;" />
+                      {% else %}
+                        <span class="text-muted small">No image</span>
+                      {% endif %}
+                    </td>
+                    <td>
+                      <div>{{ album.name }}</div>
+                      {% if album.event_date %}<small class="text-muted">{{ album.event_date.strftime('%d %b %Y') }}</small>{% endif %}
+                    </td>
+                    <td class="d-flex gap-2">
+                      <a class="btn btn-sm btn-outline-primary" href="{{ url_for('admin.gallery_album_edit', album_id=album.id) }}">Edit</a>
+                      <form method="post" action="{{ url_for('admin.gallery_album_delete', album_id=album.id) }}">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                        <button class="btn btn-sm btn-outline-danger" type="submit">Delete</button>
+                      </form>
+                    </td>
+                  </tr>
+                {% else %}
+                  <tr><td colspan="3">No albums yet.</td></tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
@@ -24,13 +55,29 @@
       <div class="card h-100">
         <div class="card-body">
           <h2 class="h5">Media Items</h2>
-          <ul class="mb-0">
-            {% for item in items %}
-              <li>{{ item.title }}{% if item.album %} - {{ item.album.name }}{% endif %}</li>
-            {% else %}
-              <li>No gallery items yet.</li>
-            {% endfor %}
-          </ul>
+          <div class="table-responsive">
+            <table class="table table-striped align-middle">
+              <thead><tr><th>Image</th><th>Title</th><th>Album</th><th>Actions</th></tr></thead>
+              <tbody>
+                {% for item in items %}
+                  <tr>
+                    <td><img src="{{ item.image_url }}" alt="{{ item.title }}" class="img-thumbnail" style="max-width: 70px;" /></td>
+                    <td>{{ item.title }}</td>
+                    <td>{{ item.album.name if item.album else 'No album' }}</td>
+                    <td class="d-flex gap-2">
+                      <a class="btn btn-sm btn-outline-primary" href="{{ url_for('admin.gallery_item_edit', item_id=item.id) }}">Edit</a>
+                      <form method="post" action="{{ url_for('admin.gallery_item_delete', item_id=item.id) }}">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                        <button class="btn btn-sm btn-outline-danger" type="submit">Delete</button>
+                      </form>
+                    </td>
+                  </tr>
+                {% else %}
+                  <tr><td colspan="4">No gallery items yet.</td></tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
